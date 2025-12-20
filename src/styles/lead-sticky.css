@@ -1,0 +1,354 @@
+/**
+ * PHAROS - Lead Follower System (Sticky-Proof)
+ * 
+ * Sistema robusto de LeadCard que funciona independente de overflow/transform
+ */
+
+/* ====================================
+   LAYOUT BASE
+   ==================================== */
+
+.imovel-grid {
+  display: grid;
+  grid-template-columns: 380px minmax(0, 1fr);
+  gap: clamp(20px, 3vw, 48px);
+  align-items: start;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 4vw, 48px);
+}
+
+#imovel-sidebar {
+  position: relative;
+}
+
+#lead-boundary {
+  position: relative;
+  min-height: 100vh;
+  padding-bottom: 24px;
+}
+
+/* ====================================
+   DESKTOP: Follower System
+   ==================================== */
+
+.lead-follower {
+  /* Position controlado por JS (absolute ou fixed) */
+  /* Width controlado por JS (ResizeObserver) */
+  will-change: transform;
+  z-index: 5;
+}
+
+.lead-card {
+  background: var(--pharos-white, #ffffff);
+  border: 1px solid var(--pharos-slate-300, #cbd5e1);
+  border-radius: 16px;
+  box-shadow: 0 6px 20px rgba(25, 34, 51, 0.08);
+  transition: box-shadow 0.2s ease;
+}
+
+.lead-card:hover {
+  box-shadow: 0 8px 32px rgba(25, 34, 51, 0.12);
+}
+
+/* ====================================
+   LEGACY: Sticky System (backup)
+   ==================================== */
+
+.lead-card-sticky {
+  position: sticky;
+  top: var(--lead-stick-top, 88px);
+  z-index: 5;
+  transition: transform 0.2s ease;
+  will-change: transform;
+}
+
+.lead-card-sticky.is-bottomed {
+  position: absolute;
+  top: auto;
+  bottom: 0;
+  transform: translateY(0);
+}
+
+.sticky-boundary {
+  position: relative;
+  padding-bottom: 24px;
+  min-height: 100vh;
+}
+
+#sticky-bottom-sentinel {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  pointer-events: none;
+  visibility: hidden;
+}
+
+/* ====================================
+   MOBILE: Dock System (≤1024px)
+   ==================================== */
+
+@media (min-width: 1025px) {
+  .lead-dock,
+  .lead-sheet-overlay {
+    display: none !important;
+  }
+}
+
+@media (max-width: 1024px) {
+  /* Esconder follower e sticky no mobile */
+  .lead-follower,
+  .lead-card-sticky {
+    display: none;
+  }
+
+  /* Grid mobile: uma coluna */
+  .imovel-grid {
+    grid-template-columns: 1fr;
+  }
+
+  #imovel-sidebar {
+    display: none;
+  }
+
+  /* Dock fixo */
+  .lead-dock {
+    position: fixed;
+    inset: auto 0 0 0;
+    background: var(--pharos-white, #ffffff);
+    border-top: 1px solid var(--pharos-slate-300, #cbd5e1);
+    padding: 12px clamp(12px, 4vw, 24px);
+    padding-bottom: max(12px, env(safe-area-inset-bottom));
+    z-index: 20;
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .lead-dock__cta {
+    flex: 1;
+    max-width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 14px 24px;
+    background: var(--pharos-blue-500, #054ada);
+    color: white;
+    border: none;
+    border-radius: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .lead-dock__cta:active {
+    transform: scale(0.98);
+    background: var(--pharos-blue-600, #043bb8);
+  }
+
+  /* Bottom Sheet Overlay */
+  .lead-sheet-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    z-index: 999;
+    display: flex;
+    align-items: flex-end;
+    animation: fadeIn 0.2s ease;
+  }
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  /* Bottom Sheet */
+  .lead-sheet {
+    position: relative;
+    width: 100%;
+    max-height: 90vh;
+    background: var(--pharos-white, #ffffff);
+    border-top-left-radius: 24px;
+    border-top-right-radius: 24px;
+    overflow: hidden;
+    animation: slideUp 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .lead-sheet__header {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+    border-bottom: 1px solid var(--pharos-slate-200, #e2e8f0);
+  }
+
+  .lead-sheet__handle {
+    width: 40px;
+    height: 4px;
+    background: var(--pharos-slate-300, #cbd5e1);
+    border-radius: 2px;
+  }
+
+  .lead-sheet__close {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    padding: 8px;
+    background: var(--pharos-slate-100, #f1f5f9);
+    border: none;
+    border-radius: 50%;
+    color: var(--pharos-slate-600, #475569);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .lead-sheet__close:active {
+    transform: scale(0.95);
+    background: var(--pharos-slate-200, #e2e8f0);
+  }
+
+  .lead-sheet__content {
+    padding: 24px clamp(16px, 4vw, 32px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    max-height: calc(90vh - 60px);
+    background: white;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+    animation: slideUp 0.3s ease;
+  }
+
+  @keyframes slideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  /* Sheet Header */
+  .lead-sheet__header {
+    position: relative;
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid var(--pharos-slate-200, #e2e8f0);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .lead-sheet__handle {
+    width: 40px;
+    height: 4px;
+    background: var(--pharos-slate-300, #cbd5e1);
+    border-radius: 2px;
+  }
+
+  .lead-sheet__close {
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 8px;
+    background: var(--pharos-slate-100, #f1f5f9);
+    border: none;
+    border-radius: 8px;
+    color: var(--pharos-slate-600, #475569);
+    cursor: pointer;
+    transition: all 0.2s ease;
+    touch-action: manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  .lead-sheet__close:active {
+    background: var(--pharos-slate-200, #e2e8f0);
+  }
+
+  /* Sheet Content */
+  .lead-sheet__content {
+    padding: 20px 16px;
+    max-height: calc(90vh - 64px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Ajustar LeadCaptureCard dentro do sheet */
+  .lead-sheet__content .lead-capture-card {
+    box-shadow: none;
+    border: none;
+    padding: 0;
+  }
+}
+
+/* ====================================
+   Focus & Accessibility
+   ==================================== */
+
+.lead-card-sticky:focus-within,
+.lead-dock__cta:focus-visible,
+.lead-sheet__close:focus-visible {
+  outline: 2px solid var(--pharos-blue-500, #054ada);
+  outline-offset: 2px;
+}
+
+/* Garantir que focus rings sejam sempre visíveis */
+.lead-card-sticky button:focus-visible,
+.lead-card-sticky input:focus-visible,
+.lead-card-sticky select:focus-visible {
+  outline: 2px solid var(--pharos-blue-500, #054ada);
+  outline-offset: 2px;
+}
+
+/* ====================================
+   Performance Optimizations
+   ==================================== */
+
+/* Promover para layer própria (GPU) */
+.lead-card-sticky,
+.lead-dock,
+.lead-sheet {
+  transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+/* Smooth scrolling no sheet */
+.lead-sheet__content {
+  scroll-behavior: smooth;
+}
+
+/* ====================================
+   Print
+   ==================================== */
+
+@media print {
+  .lead-card-sticky,
+  .lead-dock,
+  .lead-sheet-overlay {
+    display: none !important;
+  }
+}
+

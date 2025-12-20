@@ -1,0 +1,192 @@
+{
+  "$schema": "https://pharos.imobiliaria/design-tokens/schema",
+  "version": "1.0.0",
+  "lastUpdated": "2025-10-11",
+  "description": "Paleta oficial Pharos - Sistema enxuto, acessível (WCAG 2.1 AA/AAA), proporção 70/20/10",
+  
+  "colors": {
+    "primary": {
+      "blue": {
+        "500": {
+          "value": "#054ADA",
+          "name": "Pharos Blue",
+          "usage": "Ação primária, links, CTAs",
+          "contrast": {
+            "white": "7.00",
+            "wcag": "AAA"
+          }
+        },
+        "600": {
+          "value": "#043BAE",
+          "name": "Pharos Blue Hover",
+          "usage": "Estado hover de Blue 500"
+        },
+        "700": {
+          "value": "#032C83",
+          "name": "Pharos Blue Active",
+          "usage": "Estado active/pressed"
+        }
+      },
+      
+      "navy": {
+        "900": {
+          "value": "#192233",
+          "name": "Pharos Navy",
+          "usage": "Header, footer, títulos principais",
+          "contrast": {
+            "white": "15.93",
+            "wcag": "AAA"
+          }
+        }
+      }
+    },
+    
+    "neutrals": {
+      "slate": {
+        "700": {
+          "value": "#2C3444",
+          "name": "Slate Dark",
+          "usage": "Texto principal (body)",
+          "contrast": {
+            "white": "12.49",
+            "offwhite": "11.84",
+            "wcag": "AAA"
+          }
+        },
+        "500": {
+          "value": "#585E6B",
+          "name": "Slate Medium",
+          "usage": "Texto secundário, metadados",
+          "contrast": {
+            "white": "6.50",
+            "offwhite": "6.17",
+            "wcag": "AA"
+          }
+        },
+        "300": {
+          "value": "#ADB4C0",
+          "name": "Slate Light",
+          "usage": "Bordas e divisores APENAS (não usar em texto)",
+          "contrast": {
+            "white": "2.09",
+            "wcag": "FAIL",
+            "note": "Não usar para texto"
+          }
+        }
+      },
+      
+      "base": {
+        "white": {
+          "value": "#FFFFFF",
+          "name": "White",
+          "usage": "Backgrounds de cards, texto em fundos escuros"
+        },
+        "offwhite": {
+          "value": "#F7F9FC",
+          "name": "Off-White Premium",
+          "usage": "Background principal do site (body)"
+        }
+      }
+    },
+    
+    "accent": {
+      "gold": {
+        "500": {
+          "value": "#C89C4D",
+          "name": "Brass Gold",
+          "usage": "Micro-detalhes, ícones, filetes. NUNCA blocos ou texto longo",
+          "contrast": {
+            "white": "2.52",
+            "wcag": "FAIL",
+            "note": "Uso apenas como detalhe decorativo"
+          }
+        }
+      }
+    },
+    
+    "feedback": {
+      "success": {
+        "value": "#2FBF71",
+        "name": "Success Green",
+        "usage": "Estados de sucesso, confirmações"
+      },
+      "error": {
+        "value": "#C53A3A",
+        "name": "Error Red",
+        "usage": "Estados de erro, validações (contraste AA)",
+        "contrast": {
+          "white": "4.58",
+          "wcag": "AA"
+        }
+      },
+      "warning": {
+        "value": "#F5A524",
+        "name": "Warning Amber",
+        "usage": "Avisos, atenção"
+      }
+    },
+    
+    "semantic": {
+      "text": {
+        "primary": "#2C3444",
+        "secondary": "#585E6B",
+        "inverse": "#FFFFFF"
+      },
+      "background": {
+        "body": "#F7F9FC",
+        "surface": "#FFFFFF",
+        "dark": "#192233"
+      },
+      "border": {
+        "default": "#ADB4C0",
+        "focus": "#054ADA",
+        "error": "#C53A3A"
+      }
+    }
+  },
+  
+  "gradients": {
+    "primary": {
+      "value": "linear-gradient(135deg, #054ADA 0%, #192233 60%)",
+      "name": "Blue to Navy",
+      "usage": "Hero sections, CTAs premium"
+    }
+  },
+  
+  "overlays": {
+    "dark": "rgba(25, 34, 51, 0.55)",
+    "medium": "rgba(25, 34, 51, 0.35)",
+    "light": "rgba(25, 34, 51, 0.15)"
+  },
+  
+  "shadows": {
+    "sm": {
+      "value": "0 2px 8px rgba(25, 34, 51, 0.04)",
+      "usage": "Elementos sutis"
+    },
+    "md": {
+      "value": "0 6px 20px rgba(25, 34, 51, 0.08)",
+      "usage": "Cards padrão"
+    },
+    "lg": {
+      "value": "0 10px 28px rgba(25, 34, 51, 0.12)",
+      "usage": "Cards hover, dropdowns"
+    },
+    "xl": {
+      "value": "0 16px 40px rgba(25, 34, 51, 0.16)",
+      "usage": "Modais, elementos elevados"
+    }
+  },
+  
+  "usage_guidelines": {
+    "proportion": "70% neutros / 20% primária (blue/navy) / 10% acento (gold)",
+    "accessibility": "Sempre validar contraste AA (≥4.5) para texto normal, AAA (≥7) para títulos",
+    "restrictions": [
+      "Nunca usar Slate 300 em texto",
+      "Nunca usar Gold em blocos ou texto longo",
+      "Evitar Gold sobre White (contraste 2.52)",
+      "Não criar novos tons de azul fora da paleta",
+      "Não usar degradê azul→branco"
+    ]
+  }
+}

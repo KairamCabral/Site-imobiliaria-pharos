@@ -1,0 +1,39 @@
+# Regras do Cursor para Imobiliária Pharos
+
+## Convenções de Nomeação e Estrutura
+- Nomes de componentes em PascalCase (ex: Header.tsx, CardImovel.tsx)
+- Nomes de funções/hooks em camelCase (ex: useFetchImoveis.ts)
+- Nomes de arquivos de páginas em minúsculas (ex: imoveis/page.tsx)
+- Constantes em SNAKE_CASE maiúsculo (ex: API_URL)
+- Interfaces/Types com prefixo "I" (ex: IImovel, IFormContato)
+- Importações agrupadas: React, Next, Componentes, Libs, Tipos
+- Criar pastas para cada página e componentes relacionados
+
+## Preferência por Server Components
+- Utilizar Server Components por padrão, principalmente para:
+  - Renderização estática de páginas (SSG)
+  - Componentes que não possuem interatividade
+  - Componentes que fazem fetch de dados
+- Utilizar "use client" apenas quando necessário:
+  - Componentes com hooks (useState, useEffect)
+  - Componentes com interatividade (onClick, formulários)
+  - Componentes que precisam de browser APIs
+
+## Guidelines de SEO
+- Utilizar metadata export em cada page.tsx
+- Títulos específicos para cada página
+- Descrições únicas com 140-160 caracteres
+- Uso correto de heading tags (h1, h2, h3)
+- Otimizar imagens com alt text e dimensões corretas
+- Utilizar URLs semânticas e amigáveis
+- Implementar schema.org para rich snippets imobiliários
+
+## Regras de Acessibilidade e Performance
+- WCAG 2.1 nível AA como mínimo
+- Contraste adequado (4.5:1 para texto normal)
+- Elementos interativos com tamanho mínimo 44x44px
+- Nomes acessíveis para elementos de formulário
+- Semântica HTML5 correta (nav, main, section)
+- Lazy loading para imagens e componentes pesados
+- Prioridade para CSS crítico inline
+- Limitar pacotes externos e monitorar bundle size 

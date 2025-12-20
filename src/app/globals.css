@@ -1,0 +1,823 @@
+/**
+ * PHAROS GLOBALS
+ * Integração do sistema de design tokens oficial
+ */
+
+@import '../styles/pharos-tokens.css';
+@import '../styles/design-tokens.css';
+@import '../styles/animations.css';
+@import '../styles/leaflet-custom.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  /* Esconder scrollbar mas manter funcionalidade */
+  .scrollbar-hide {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* Suporte para line-clamp */
+  .line-clamp-1 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 1;
+  }
+
+  .line-clamp-2 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+  }
+
+  .line-clamp-3 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3;
+  }
+
+  .line-clamp-6 {
+    overflow: hidden;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 6;
+  }
+
+  /* Animação para Empty State */
+  @keyframes gentle-pulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+
+  .animate-gentle-pulse {
+    animation: gentle-pulse 3s ease-in-out infinite;
+  }
+}
+
+:root {
+  /* ===================================
+     ALIASES PARA COMPATIBILIDADE
+     (migrar gradualmente para --ph-*)
+     =================================== */
+  
+  /* Primárias (compatibilidade) */
+  --color-primary: var(--ph-blue-500);
+  --color-secondary: var(--ph-navy-900);
+  
+  /* Header Height */
+  --header-height: var(--ph-header-height);
+  
+  /* Grid */
+  --grid-gutter: var(--ph-gutter);
+  --container-width: var(--ph-container-width);
+
+  /* Foreground/Background (Next.js defaults) */
+  --foreground-rgb: 44, 52, 68; /* Slate 700 */
+  --background-start-rgb: 247, 249, 252; /* Off-White */
+  --background-end-rgb: 255, 255, 255; /* White */
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --foreground-rgb: 255, 255, 255;
+    --background-start-rgb: 0, 0, 0;
+    --background-end-rgb: 0, 0, 0;
+  }
+}
+
+/* Reset básico */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: var(--ph-font-family);
+  color: var(--ph-slate-700);
+  background-color: var(--ph-offwhite);
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Oculta o indicador de build do Next.js no ambiente de desenvolvimento */
+[id^="__next-build"], .nextjs-toast, #__next-build-watcher, #nextjs-toast {
+  display: none !important;
+}
+
+/* Tipografia */
+@layer base {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6,
+  p,
+  small,
+  label,
+  span,
+  a,
+  button,
+  input,
+  select,
+  textarea {
+    font-family: var(--ph-font-family);
+  }
+  
+  h1, h2, h3 {
+    color: var(--ph-navy-900);
+  }
+
+  h1 {
+    @apply text-5xl font-bold leading-tight;
+  }
+
+  h2 {
+    @apply text-4xl font-semibold leading-snug;
+  }
+
+  h3 {
+    @apply text-3xl font-semibold leading-snug;
+  }
+
+  h4 {
+    @apply text-2xl font-semibold leading-snug;
+  }
+
+  h5 {
+    @apply text-xl font-semibold leading-snug;
+  }
+
+  h6 {
+    @apply text-lg font-semibold leading-snug;
+  }
+
+  p {
+    @apply text-base font-normal leading-relaxed;
+  }
+
+  small,
+  label {
+    @apply text-sm font-medium leading-none;
+  }
+}
+
+/* Componentes */
+@layer components {
+  /* Botões */
+  .btn {
+    @apply px-6 py-3 rounded-md inline-flex items-center justify-center transition-all duration-200 font-medium;
+  }
+
+  .btn-primary {
+    @apply bg-pharos-blue-500 text-white hover:bg-pharos-blue-600 active:bg-pharos-blue-700 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-secondary {
+    @apply bg-white border-2 border-pharos-blue-500 text-pharos-blue-500 hover:bg-pharos-blue-500 hover:text-white active:bg-pharos-blue-600 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  .btn-ghost {
+    @apply bg-transparent text-pharos-blue-500 hover:bg-pharos-blue-500/10 active:bg-pharos-blue-500/20 disabled:opacity-50 disabled:cursor-not-allowed;
+  }
+
+  /* Campos de formulário */
+  .form-input {
+    @apply w-full px-4 py-3 border border-pharos-slate-300 rounded-md focus:ring-2 focus:ring-pharos-blue-500 focus:border-pharos-blue-500 focus:outline-none;
+  }
+
+  .form-input.error {
+    @apply border-red-500 focus:ring-red-500 focus:border-red-500;
+  }
+
+  .form-label {
+    @apply block text-body-sm text-pharos-slate-700 mb-2;
+  }
+
+  .form-error {
+    @apply text-red-500 text-body-sm mt-1;
+  }
+
+  /* Card de imóvel */
+  .property-card {
+    @apply bg-white rounded-lg overflow-hidden shadow-card hover:shadow-card-hover transition-all duration-300;
+  }
+
+  .property-card-img-container {
+    @apply relative w-full h-48 overflow-hidden;
+  }
+
+  .property-card-img {
+    @apply w-full h-full object-cover transition-transform duration-500 hover:scale-110;
+  }
+
+  .property-card-content {
+    @apply p-4;
+  }
+
+  .property-card-title {
+    @apply text-h5 mb-2;
+  }
+
+  .property-card-price {
+    @apply text-h6 text-pharos-blue-500 mb-2 font-bold;
+  }
+
+  .property-card-location {
+    @apply text-body-sm text-pharos-slate-500 mb-4 flex items-center;
+  }
+
+  /* Container e grid */
+  .container {
+    @apply mx-auto px-4 max-w-container;
+  }
+
+  .grid-container {
+    @apply grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6;
+  }
+
+  /* Estilos para cards de propriedades */
+  .property-highlight {
+    @apply font-bold;
+  }
+
+  .section-title {
+    @apply text-3xl font-semibold text-pharos-navy-900 mb-6;
+  }
+
+  .section-subtitle {
+    @apply text-xl font-semibold text-pharos-slate-700 mb-4;
+  }
+}
+
+/* Estilos adicionais */
+/* Estilos para a barra de pesquisa na home */
+.search-container {
+  transition: all 0.3s ease;
+}
+
+.search-container:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+.search-tab {
+  position: relative;
+  overflow: hidden;
+}
+
+.search-tab::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 0;
+  height: 3px;
+  background-color: var(--color-primary);
+  transition: width 0.3s ease;
+}
+
+.search-tab.active::after {
+  width: 100%;
+}
+
+.search-tab:not(.active):hover::after {
+  width: 50%;
+}
+
+/* Animação para o botão de busca */
+.search-button {
+  transition: all 0.2s ease;
+}
+
+.search-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.search-button:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para elementos da UI */
+.custom-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='%23999' stroke-width='2'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.75rem center;
+  background-size: 1rem;
+}
+
+/* Overlay gradiente para seções com imagens */
+.hero-overlay {
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2) 0%, rgba(0, 0, 0, 0.6) 100%);
+}
+
+/* Animações */
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.animate-fadeIn {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.pulse-animation:hover {
+  animation: pulse 1s infinite;
+}
+
+/* Componentes da UI de busca */
+.search-dropdown-item {
+  @apply px-4 py-2 hover:bg-gray-100 cursor-pointer transition-colors;
+}
+
+.search-dropdown-item:hover {
+  @apply bg-pharos-blue-500/10;
+}
+
+.search-input {
+  @apply transition-all duration-200;
+}
+
+.search-input:focus {
+  @apply ring-2 ring-pharos-blue-500 border-pharos-blue-500;
+}
+
+/* Estados ativos dos filtros */
+.filter-button-active {
+  @apply bg-pharos-blue-500/10 text-pharos-blue-500 border-pharos-blue-500;
+}
+
+/* Scrollbar personalizada e oculta */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}
+
+/* Smooth scroll para carrossel */
+.scroll-smooth {
+  scroll-behavior: smooth;
+}
+
+/* Marquee (carrossel infinito) */
+.marquee {
+  overflow: hidden;
+  position: relative;
+  cursor: grab;
+}
+
+.marquee:active {
+  cursor: grabbing;
+}
+
+.marquee-track {
+  display: flex;
+  align-items: center;
+  animation: marquee 20s linear infinite;
+  user-select: none;
+}
+
+.marquee-track.dragging {
+  animation-play-state: paused !important;
+  cursor: grabbing;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-33.333%);
+  }
+}
+
+/* Safe Area Support (iPhone notch, etc.) */
+.safe-top {
+  padding-top: env(safe-area-inset-top);
+}
+
+.safe-bottom {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+.safe-left {
+  padding-left: env(safe-area-inset-left);
+}
+
+.safe-right {
+  padding-right: env(safe-area-inset-right);
+}
+
+/* Animações para Dropdowns */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Custom Scrollbar para Dropdowns */
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Sheet Modal - Full Height Viewport */
+/* Garante que o sheet ocupe 100% da viewport sem gaps */
+@supports (-webkit-touch-callout: none) {
+  /* Safari iOS */
+  .sheet-modal-container {
+    height: -webkit-fill-available !important;
+  }
+}
+
+/* Remove margens bottom de elementos filhos dentro do content do sheet */
+.sheet-modal-content > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+.sheet-modal-content {
+  /* Garante smooth scrolling */
+  -webkit-overflow-scrolling: touch;
+}
+
+/* Garantir que o último elemento não tenha padding bottom extra */
+.sheet-modal-action-bar {
+  /* Fallback para navegadores que não suportam max() com env() */
+  padding-bottom: 16px;
+  /* Navegadores modernos com suporte a safe-area */
+  padding-bottom: max(16px, env(safe-area-inset-bottom));
+}
+
+/* Remove margin bottom dos botões dentro da action bar */
+.sheet-modal-action-bar button:last-child {
+  margin-bottom: 0 !important;
+}
+
+.sheet-modal-action-bar .space-y-3 > *:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* Overlay - previne scroll do body */
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+/* Overscroll behavior para sheets */
+.overscroll-contain {
+  overscroll-behavior: contain;
+}
+
+/* Animações do Sheet Modal */
+@keyframes slideInFromBottom {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes slideInFromRight {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInBackdrop {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.sheet-animate-mobile {
+  animation: slideInFromBottom 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sheet-animate-desktop {
+  animation: slideInFromRight 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.backdrop-animate {
+  animation: fadeInBackdrop 0.2s ease-out;
+}
+
+/* Z-Index utilities */
+.z-header {
+  z-index: var(--z-header);
+}
+
+.z-sticky-filter {
+  z-index: var(--z-sticky-filter);
+}
+
+.z-popover {
+  z-index: var(--z-popover);
+}
+
+.z-sheet {
+  z-index: var(--z-sheet);
+}
+
+.z-toast {
+  z-index: var(--z-toast);
+}
+
+/* Custom scrollbar slim para sidebar */
+.scrollbar-slim::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scrollbar-slim::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scrollbar-slim::-webkit-scrollbar-thumb {
+  background: #C9D1E0;
+  border-radius: 2px;
+}
+
+.scrollbar-slim::-webkit-scrollbar-thumb:hover {
+  background: #8E99AB;
+}
+
+/* Skeleton loader */
+@keyframes skeleton-pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.skeleton {
+  animation: skeleton-pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  background: linear-gradient(90deg, #F5F7FA 0%, #E8ECF2 50%, #F5F7FA 100%);
+  background-size: 200% 100%;
+}
+
+/* Shimmer animation for skeletons */
+@keyframes shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+.animate-shimmer {
+  animation: shimmer 2s infinite;
+}
+
+/* Smooth appearance animation */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.4s ease-out forwards;
+}
+
+/* Estado inicial para elementos que serão animados (evita flash) */
+.will-animate {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+/* Animação mais suave para carousels e cards */
+@keyframes fade-in-scale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.animate-fade-in-scale {
+  animation: fade-in-scale 0.5s ease-out forwards;
+}
+
+/* ========================================
+   GOOGLE MAPS INFO WINDOW - LIMPO E SEM DUPLICATAS
+   ======================================== */
+
+/* Remover container branco e scroll */
+.gm-style-iw-d {
+  overflow: visible !important;
+  padding: 0 !important;
+  background: transparent !important;
+}
+
+.gm-style-iw-c {
+  overflow: visible !important;
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  max-width: none !important;
+}
+
+.gm-style-iw-t {
+  overflow: visible !important;
+}
+
+/* Remover ponteiro/seta do InfoWindow */
+.gm-style-iw-tc {
+  display: none !important;
+}
+
+/* Esconder botão de fechar padrão do Google Maps */
+.gm-style-iw button[aria-label="Close"],
+.gm-ui-hover-effect {
+  display: none !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
+}
+
+/* ===================================
+   SWIPER CARROSSEL - RECOMENDAÇÕES
+   =================================== */
+
+/* Container do carrossel de recomendações */
+.property-recommendations-swiper {
+  overflow: visible !important;
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
+/* Navegação - Botões de setas */
+.property-recommendations-swiper .swiper-button-next,
+.property-recommendations-swiper .swiper-button-prev {
+  width: 48px;
+  height: 48px;
+  background: white;
+  border-radius: 50%;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  opacity: 0;
+}
+
+.property-recommendations-swiper:hover .swiper-button-next,
+.property-recommendations-swiper:hover .swiper-button-prev {
+  opacity: 1;
+}
+
+.property-recommendations-swiper .swiper-button-next:hover,
+.property-recommendations-swiper .swiper-button-prev:hover {
+  background: #054ADA;
+  box-shadow: 0 6px 16px rgba(5, 74, 218, 0.3);
+}
+
+.property-recommendations-swiper .swiper-button-next::after,
+.property-recommendations-swiper .swiper-button-prev::after {
+  font-size: 18px;
+  font-weight: bold;
+  color: #192233;
+  transition: color 0.3s ease;
+}
+
+.property-recommendations-swiper .swiper-button-next:hover::after,
+.property-recommendations-swiper .swiper-button-prev:hover::after {
+  color: white;
+}
+
+/* Posicionamento dos botões */
+.property-recommendations-swiper .swiper-button-next {
+  right: -16px;
+}
+
+.property-recommendations-swiper .swiper-button-prev {
+  left: -16px;
+}
+
+/* Mobile: esconder botões de navegação */
+@media (max-width: 768px) {
+  .property-recommendations-swiper .swiper-button-next,
+  .property-recommendations-swiper .swiper-button-prev {
+    display: none;
+  }
+}
+
+/* Paginação - Bullets */
+.property-recommendations-swiper .swiper-pagination-bullet {
+  width: 10px;
+  height: 10px;
+  background: #CBD5E1;
+  opacity: 1;
+  transition: all 0.3s ease;
+}
+
+.property-recommendations-swiper .swiper-pagination-bullet-active {
+  width: 32px;
+  border-radius: 5px;
+  background: #054ADA;
+}
+
+/* Slides - Animação suave */
+.property-recommendations-swiper .swiper-slide {
+  height: auto;
+  opacity: 0.6;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.property-recommendations-swiper .swiper-slide-active,
+.property-recommendations-swiper .swiper-slide-next {
+  opacity: 1;
+}
+
+/* Desktop: efeito de profundidade */
+@media (min-width: 1024px) {
+  .property-recommendations-swiper .swiper-slide:not(.swiper-slide-active) {
+    transform: scale(0.95);
+  }
+  
+  .property-recommendations-swiper .swiper-slide-active {
+    transform: scale(1);
+    z-index: 2;
+  }
+}

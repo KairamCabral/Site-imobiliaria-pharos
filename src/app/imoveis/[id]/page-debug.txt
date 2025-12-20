@@ -1,0 +1,10 @@
+// Para debug: teste isolando cada componente novo
+
+// 1. Comente LeadCaptureCardV2 e use LeadCaptureCard antigo
+// 2. Comente PropertyConstructionStatus  
+// 3. Comente UrgencySection
+// 4. Comente ScheduleVisitModal
+// 5. Comente MobileFloatingCTA
+
+// Se a página carregar, vá des-comentando um por um para isolar o problema
+

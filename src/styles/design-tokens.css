@@ -1,0 +1,250 @@
+/**
+ * PHAROS - Design Tokens
+ * Sistema de design premium para imobiliária de alto padrão
+ */
+
+:root {
+  /* ========================================
+     CORES PRIMÁRIAS
+     ======================================== */
+  --pharos-navy-900: #1a2332;
+  --pharos-navy-800: #2a3442;
+  --pharos-navy-700: #3a4552;
+  --pharos-navy-600: #4a5662;
+  
+  --pharos-blue-900: #004699;
+  --pharos-blue-800: #0056b3;
+  --pharos-blue-700: #0066cc;
+  --pharos-blue-600: #0077e6;
+  --pharos-blue-500: #0088ff;
+  --pharos-blue-400: #339aff;
+  --pharos-blue-300: #66b3ff;
+  --pharos-blue-200: #99ccff;
+  --pharos-blue-100: #cce6ff;
+  --pharos-blue-50: #e6f3ff;
+  
+  --pharos-gold-900: #a08729;
+  --pharos-gold-800: #b89f2f;
+  --pharos-gold-700: #d4af37;
+  --pharos-gold-600: #ddb945;
+  --pharos-gold-500: #e6c353;
+  
+  --pharos-slate-900: #0f172a;
+  --pharos-slate-800: #1e293b;
+  --pharos-slate-700: #334155;
+  --pharos-slate-600: #475569;
+  --pharos-slate-500: #64748b;
+  --pharos-slate-400: #94a3b8;
+  --pharos-slate-300: #cbd5e1;
+  --pharos-slate-200: #e2e8f0;
+  --pharos-slate-100: #f1f5f9;
+  --pharos-slate-50: #f8fafc;
+
+  /* ========================================
+     GRADIENTES
+     ======================================== */
+  --gradient-hero: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --gradient-premium: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  --gradient-trust: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+  --gradient-ocean: linear-gradient(135deg, #0088ff 0%, #00c6ff 100%);
+  --gradient-sunset: linear-gradient(135deg, #ff6b6b 0%, #feca57 100%);
+  --gradient-luxury: linear-gradient(135deg, #d4af37 0%, #f7dc6f 100%);
+  
+  /* ========================================
+     SUPERFÍCIES & ELEVAÇÃO
+     ======================================== */
+  --surface-elevated: rgba(255, 255, 255, 0.95);
+  --surface-glass: rgba(255, 255, 255, 0.7);
+  --surface-dark: rgba(26, 35, 50, 0.95);
+  --surface-overlay: rgba(0, 0, 0, 0.5);
+  
+  /* ========================================
+     ESTADOS SEMÂNTICOS
+     ======================================== */
+  --success-900: #065f46;
+  --success-700: #047857;
+  --success-500: #10b981;
+  --success-300: #6ee7b7;
+  --success-100: #d1fae5;
+  
+  --warning-900: #78350f;
+  --warning-700: #b45309;
+  --warning-500: #f59e0b;
+  --warning-300: #fcd34d;
+  --warning-100: #fef3c7;
+  
+  --error-900: #7f1d1d;
+  --error-700: #b91c1c;
+  --error-500: #ef4444;
+  --error-300: #fca5a5;
+  --error-100: #fee2e2;
+  
+  --info-900: #1e3a8a;
+  --info-700: #1d4ed8;
+  --info-500: #3b82f6;
+  --info-300: #93c5fd;
+  --info-100: #dbeafe;
+
+  /* ========================================
+     TIPOGRAFIA
+     ======================================== */
+  --font-display: 'Playfair Display', Georgia, serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  
+  /* Tamanhos de fonte */
+  --text-xs: 0.75rem;      /* 12px */
+  --text-sm: 0.875rem;     /* 14px */
+  --text-base: 1rem;       /* 16px */
+  --text-lg: 1.125rem;     /* 18px */
+  --text-xl: 1.25rem;      /* 20px */
+  --text-2xl: 1.5rem;      /* 24px */
+  --text-3xl: 1.875rem;    /* 30px */
+  --text-4xl: 2.25rem;     /* 36px */
+  --text-5xl: 3rem;        /* 48px */
+  --text-6xl: 3.75rem;     /* 60px */
+  --text-7xl: 4.5rem;      /* 72px */
+  
+  /* Pesos de fonte */
+  --font-light: 300;
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  
+  /* Line heights */
+  --leading-none: 1;
+  --leading-tight: 1.25;
+  --leading-snug: 1.375;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.625;
+  --leading-loose: 2;
+
+  /* ========================================
+     ESPAÇAMENTOS (Base 8px)
+     ======================================== */
+  --space-0: 0;
+  --space-1: 0.25rem;      /* 4px */
+  --space-2: 0.5rem;       /* 8px */
+  --space-3: 0.75rem;      /* 12px */
+  --space-4: 1rem;         /* 16px */
+  --space-5: 1.25rem;      /* 20px */
+  --space-6: 1.5rem;       /* 24px */
+  --space-8: 2rem;         /* 32px */
+  --space-10: 2.5rem;      /* 40px */
+  --space-12: 3rem;        /* 48px */
+  --space-16: 4rem;        /* 64px */
+  --space-20: 5rem;        /* 80px */
+  --space-24: 6rem;        /* 96px */
+  --space-32: 8rem;        /* 128px */
+
+  /* ========================================
+     LAYOUT & CONTAINERS
+     ======================================== */
+  --container-max: 1440px;
+  --container-wide: 1600px;
+  --container-narrow: 1024px;
+  --container-padding: clamp(1rem, 5vw, 4rem);
+  --page-max-width: 1440px;
+  --page-gutter: clamp(1rem, 4vw, 3rem);
+
+  /* ========================================
+     BORDAS & RADIUS
+     ======================================== */
+  --radius-none: 0;
+  --radius-sm: 0.5rem;     /* 8px */
+  --radius-md: 1rem;       /* 16px */
+  --radius-lg: 1.5rem;     /* 24px */
+  --radius-xl: 2rem;       /* 32px */
+  --radius-2xl: 3rem;      /* 48px */
+  --radius-full: 9999px;
+  
+  --border-width: 1px;
+  --border-width-2: 2px;
+  --border-width-4: 4px;
+
+  /* ========================================
+     SOMBRAS & ELEVAÇÃO
+     ======================================== */
+  --shadow-xs: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-sm: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+  --shadow-xl: 0 20px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1);
+  --shadow-2xl: 0 25px 50px -12px rgb(0 0 0 / 0.25);
+  --shadow-inner: inset 0 2px 4px 0 rgb(0 0 0 / 0.05);
+  
+  /* Glow effects */
+  --glow-blue: 0 0 20px rgba(59, 130, 246, 0.5);
+  --glow-gold: 0 0 20px rgba(212, 175, 55, 0.5);
+  --glow-white: 0 0 30px rgba(255, 255, 255, 0.3);
+
+  /* ========================================
+     ANIMAÇÕES & TRANSIÇÕES
+     ======================================== */
+  --duration-fast: 150ms;
+  --duration-normal: 300ms;
+  --duration-slow: 500ms;
+  --duration-slower: 800ms;
+  
+  --ease-linear: linear;
+  --ease-in: cubic-bezier(0.4, 0, 1, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+
+  /* ========================================
+     Z-INDEX LAYERS
+     ======================================== */
+  --z-base: 0;
+  --z-dropdown: 1000;
+  --z-sticky: 1100;
+  --z-fixed: 1200;
+  --z-modal-backdrop: 1300;
+  --z-modal: 1400;
+  --z-popover: 1500;
+  --z-tooltip: 1600;
+  --z-notification: 1700;
+
+  /* ========================================
+     BREAKPOINTS (para uso em JS)
+     ======================================== */
+  --breakpoint-sm: 640px;
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-xl: 1280px;
+  --breakpoint-2xl: 1536px;
+}
+
+/* ========================================
+   DARK MODE (futuro)
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    /* Será implementado conforme necessidade */
+  }
+}
+
+/* ========================================
+   UTILITIES GLOBAIS
+   ======================================== */
+.blur-backdrop {
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-effect {
+  background: var(--surface-glass);
+  backdrop-filter: blur(12px) saturate(180%);
+  -webkit-backdrop-filter: blur(12px) saturate(180%);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+}
+
+.gradient-text {
+  background: var(--gradient-trust);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+

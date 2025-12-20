@@ -1,0 +1,83 @@
+========================================
+RELATÓRIO DE REQUISIÇÃO C2S - PHAROS
+Data: 2025-12-10 15:35
+========================================
+
+1. ENDPOINT
+-----------
+POST https://api.contact2sale.com/integration/lead
+
+2. HEADERS
+----------
+Authorization: Bearer dc3e9b0ce9ba484da1e1e5e3d884f2778bd71dc5e8c7afe50f
+Content-Type: application/json
+
+3. BODY (PAYLOAD COMPLETO)
+---------------------------
+{
+  "data": {
+    "type": "lead",
+    "attributes": {
+      "name": "João Silva Teste",
+      "email": "joao.teste@exemplo.com",
+      "phone": "5548999999999",
+      "source": "Site Pharos",
+      "description": "Teste de integração - Origem Formulário Contato",
+      "tags": [
+        "site"
+      ],
+      "company_id": "aa5ca38bc3a7884f01fed9282a2fcfce",
+      "seller_id": "2ec49e6f0aa0aed39d48a8cf391c6a24"
+    }
+  }
+}
+
+4. RESPOSTA DO SERVIDOR
+------------------------
+Status: 422 Unprocessable Entity
+
+Response Body:
+{
+  "success": false
+}
+
+5. INFORMAÇÕES ADICIONAIS
+--------------------------
+- Company ID obtido via GET /sellers (todos os sellers retornam este ID)
+- Seller ID: "Kairam" (is_master: true)
+- Token obtido do painel C2S
+- Formato JSON:API conforme documentação oficial
+
+6. COMPANY E SELLER ENCONTRADOS
+--------------------------------
+Company:
+  ID: aa5ca38bc3a7884f01fed9282a2fcfce
+  Nome: Pharos Negócios
+
+Seller (padrão):
+  ID: 2ec49e6f0aa0aed39d48a8cf391c6a24
+  Nome: Kairam
+  Email: contato@pharosnegocios.com.br
+  Phone: 5547991878070
+  Company ID: aa5ca38bc3a7884f01fed9282a2fcfce
+  is_master: true
+
+7. TESTES REALIZADOS
+---------------------
+✅ Formato flat nos attributes (conforme solicitado pelo suporte)
+✅ Company_id e seller_id incluídos
+✅ Token validado (GET /sellers retorna dados)
+✅ Payload testado direto na API (sem intermediários)
+❌ Resultado: Sempre retorna 422 com {"success":false}
+
+8. DÚVIDAS PARA O SUPORTE
+--------------------------
+1. O token tem permissão para criar leads?
+2. Falta algum campo obrigatório não documentado?
+3. Os IDs de company e seller estão corretos?
+4. A conta tem alguma restrição ou configuração especial?
+
+========================================
+FIM DO RELATÓRIO
+========================================
+

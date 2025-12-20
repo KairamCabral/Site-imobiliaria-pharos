@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Placeholders</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        h1 {
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .placeholder {
+            width: 800px;
+            height: 600px;
+            background-color: #f0f0f0;
+            border: 1px solid #ddd;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin: 20px 0;
+            position: relative;
+        }
+        .placeholder-text {
+            font-size: 24px;
+            color: #666;
+            text-align: center;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input, select {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+        button:hover {
+            background-color: #45a049;
+        }
+        .download-btn {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de Imagens Placeholder</h1>
+        
+        <div class="input-group">
+            <label for="width">Largura (px):</label>
+            <input type="number" id="width" value="800" min="50" max="2000">
+        </div>
+        
+        <div class="input-group">
+            <label for="height">Altura (px):</label>
+            <input type="number" id="height" value="600" min="50" max="2000">
+        </div>
+        
+        <div class="input-group">
+            <label for="text">Texto:</label>
+            <input type="text" id="text" value="Placeholder">
+        </div>
+        
+        <div class="input-group">
+            <label for="bgColor">Cor de Fundo:</label>
+            <input type="color" id="bgColor" value="#f0f0f0">
+        </div>
+        
+        <div class="input-group">
+            <label for="textColor">Cor do Texto:</label>
+            <input type="color" id="textColor" value="#666666">
+        </div>
+        
+        <button onclick="updatePlaceholder()">Gerar Placeholder</button>
+        
+        <div id="placeholder" class="placeholder">
+            <div id="placeholderText" class="placeholder-text">Placeholder</div>
+        </div>
+        
+        <button class="download-btn" onclick="downloadPlaceholder()">Baixar Imagem</button>
+    </div>
+
+    <script>
+        function updatePlaceholder() {
+            const width = document.getElementById('width').value;
+            const height = document.getElementById('height').value;
+            const text = document.getElementById('text').value;
+            const bgColor = document.getElementById('bgColor').value;
+            const textColor = document.getElementById('textColor').value;
+            
+            const placeholder = document.getElementById('placeholder');
+            const placeholderText = document.getElementById('placeholderText');
+            
+            placeholder.style.width = width + 'px';
+            placeholder.style.height = height + 'px';
+            placeholder.style.backgroundColor = bgColor;
+            
+            placeholderText.textContent = text;
+            placeholderText.style.color = textColor;
+        }
+        
+        function downloadPlaceholder() {
+            const placeholder = document.getElementById('placeholder');
+            
+            // Criar um canvas com o tamanho do placeholder
+            const canvas = document.createElement('canvas');
+            canvas.width = placeholder.offsetWidth;
+            canvas.height = placeholder.offsetHeight;
+            
+            const ctx = canvas.getContext('2d');
+            
+            // Desenhar o fundo
+            ctx.fillStyle = placeholder.style.backgroundColor;
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            
+            // Desenhar o texto
+            const text = document.getElementById('placeholderText').textContent;
+            ctx.fillStyle = document.getElementById('placeholderText').style.color;
+            ctx.font = '24px Arial';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(text, canvas.width / 2, canvas.height / 2);
+            
+            // Criar link de download
+            const a = document.createElement('a');
+            a.href = canvas.toDataURL('image/jpeg');
+            a.download = 'placeholder.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+        }
+        
+        // Inicializar o placeholder
+        updatePlaceholder();
+    </script>
+</body>
+</html> 

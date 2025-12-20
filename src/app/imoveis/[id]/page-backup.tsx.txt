@@ -1,0 +1,3 @@
+// BACKUP da página original - caso precise reverter
+// Renomeie para page.tsx se precisar voltar ao funcionamento anterior
+
