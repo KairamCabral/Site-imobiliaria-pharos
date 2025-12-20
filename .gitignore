@@ -45,3 +45,6 @@ next-env.d.ts
 /deploy_out/
 *.zip
 pharos-next-release.zip
+
+# cursor debug
+.cursor/debug.log
