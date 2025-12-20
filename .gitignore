@@ -48,3 +48,5 @@ pharos-next-release.zip
 
 # cursor debug
 .cursor/debug.log
+
+.vercel
