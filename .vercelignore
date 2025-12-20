@@ -1,0 +1,26 @@
+# Vercel Ignore
+.cursor/
+node_modules/
+.next/
+.git/
+*.md
+docs/
+messages/
+scripts/
+*.log
+*.tsbuildinfo
+test-*.ps1
+test-*.json
+descobrir-campos-vista.ps1
+criar-env-temp.ps1
+extract-ph1060-data.js
+dwv-doc.html
+tmp-dwv.html
+listarcampos.json
+vista-campos-raw.json
+temp-boreal-props.json
+pharos-next-release.zip
+performance-budgets.json
+jest.config.js
+jest.setup.js
+
