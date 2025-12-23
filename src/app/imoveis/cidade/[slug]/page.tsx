@@ -11,15 +11,12 @@ import { generateBreadcrumbSchema } from '@/utils/structuredData';
 import StructuredData from '@/components/StructuredData';
 import type { BreadcrumbItem } from '@/types';
 
-export const revalidate = 300; // 5 minutos
-
 type PageParams = {
   slug: string;
 };
 
 // ✅ REMOVIDO generateStaticParams para evitar build massivo
 // Rotas serão geradas on-demand com ISR
-export const dynamic = 'force-dynamic';
 export const revalidate = 600; // 10 minutos
 export const dynamicParams = true;
 

@@ -50,3 +50,4 @@ pharos-next-release.zip
 .cursor/debug.log
 
 .vercel
+.env*.local
