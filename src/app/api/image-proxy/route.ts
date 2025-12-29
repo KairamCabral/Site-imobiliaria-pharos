@@ -44,7 +44,7 @@ export async function GET(request: NextRequest) {
       .toBuffer();
 
     // Retornar imagem otimizada com cache agressivo
-    return new NextResponse(optimizedBuffer, {
+    return new NextResponse(new Uint8Array(optimizedBuffer), {
       headers: {
         'Content-Type': 'image/webp',
         'Cache-Control': 'public, max-age=31536000, immutable',
@@ -60,7 +60,7 @@ export async function GET(request: NextRequest) {
       const fallbackResponse = await fetch(url);
       if (fallbackResponse.ok) {
         const fallbackBuffer = await fallbackResponse.arrayBuffer();
-        return new NextResponse(fallbackBuffer, {
+        return new NextResponse(new Uint8Array(fallbackBuffer), {
           headers: {
             'Content-Type': fallbackResponse.headers.get('Content-Type') || 'image/jpeg',
             'Cache-Control': 'public, max-age=3600',
