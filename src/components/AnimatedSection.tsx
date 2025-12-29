@@ -27,8 +27,8 @@ export function AnimatedSection({
   threshold = 0.1,
   style,
 }: AnimatedSectionProps) {
-  // ✅ CORREÇÃO: Prevenir hydration mismatch
-  // Servidor e cliente renderizam a MESMA estrutura, animação só ativa no cliente
+  // Sempre renderiza visível para evitar problemas de carregamento
+  // Animação é apenas um enhancement progressivo
   const [isMounted, setIsMounted] = useState(false);
   
   const { ref, isInView } = useInViewAnimation({
@@ -44,16 +44,12 @@ export function AnimatedSection({
   
   const Component = as;
   
-  // Servidor e cliente inicial: renderiza com as MESMAS classes (visível)
-  // Após animação ativar: aplica fade-in
+  // Sempre visível por padrão
+  // Apenas aplica a animação suave de entrada se o componente está montado
   return (
     <Component
       ref={ref}
-      className={`transition-all duration-500 ease-out ${
-        isMounted && !isInView
-          ? 'opacity-0 translate-y-4' 
-          : 'opacity-100 translate-y-0'
-      } ${className}`}
+      className={`${className}`}
       style={style}
     >
       {children}

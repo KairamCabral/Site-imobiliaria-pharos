@@ -99,23 +99,23 @@ export default function PropertyConstructionTimeline({
         />
 
         {/* Estágios */}
-        <div className="relative grid grid-cols-4 gap-2">
+        <div className="relative grid grid-cols-4 gap-2 sm:gap-4">
           {STAGES.map((stage, index) => {
             const isActive = stage.id <= currentStage.id;
             const isCurrent = stage.id === currentStage.id;
             const isPast = stage.id < currentStage.id;
             
             return (
-              <div key={stage.id} className="flex flex-col items-center">
+              <div key={stage.id} className="flex flex-col items-center min-w-0">
                 {/* Círculo */}
                 <div className="relative mb-3">
                   <div
                     className={`
-                      w-12 h-12 rounded-full flex items-center justify-center text-lg font-semibold
+                      w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-base sm:text-lg font-semibold
                       transition-all duration-500 ease-out
                       ${animated ? 'scale-100 opacity-100' : 'scale-75 opacity-0'}
                       ${isCurrent 
-                        ? 'bg-pharos-blue-500 text-white shadow-lg shadow-pharos-blue-500/30 ring-4 ring-pharos-blue-100' 
+                        ? 'bg-pharos-blue-500 text-white shadow-lg shadow-pharos-blue-500/30 ring-2 sm:ring-4 ring-pharos-blue-100' 
                         : isPast
                         ? 'bg-pharos-blue-500 text-white'
                         : 'bg-gray-100 text-gray-400'
@@ -135,10 +135,10 @@ export default function PropertyConstructionTimeline({
                 </div>
 
                 {/* Label */}
-                <div className="text-center">
+                <div className="text-center min-w-0 px-1">
                   <p 
                     className={`
-                      text-xs lg:text-sm font-medium transition-all duration-500
+                      text-[10px] sm:text-xs lg:text-sm font-medium transition-all duration-500 leading-tight
                       ${animated ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-2'}
                       ${isCurrent 
                         ? 'text-pharos-blue-600' 
@@ -151,7 +151,8 @@ export default function PropertyConstructionTimeline({
                       transitionDelay: `${index * 150 + 200}ms` 
                     }}
                   >
-                    {stage.shortLabel}
+                    <span className="hidden sm:inline">{stage.label}</span>
+                    <span className="inline sm:hidden">{stage.shortLabel}</span>
                   </p>
                   
                   {/* Data de entrega (só no estágio atual se houver) */}

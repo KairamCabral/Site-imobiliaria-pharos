@@ -1,18 +1,40 @@
 'use client';
 
+import { Suspense } from 'react';
+import dynamic from 'next/dynamic';
 import Link from "next/link";
 import Image from "next/image";
-import CustomImage from "@/components/CustomImage";
-import EmpreendimentoCard from "@/components/EmpreendimentoCard";
 import SearchFilter from "@/components/SearchFilter";
-import AnunciarForm from "@/components/AnunciarForm";
 import PropertyShowcaseCarousel from "@/components/PropertyShowcaseCarousel";
 import type { Empreendimento, Imovel } from "@/types";
 import { LazySection } from "@/components/LazySection";
 import { createBairroSlug } from '@/utils/locationSlug';
-import LogosCarousel from '@/components/LogosCarousel';
-import VideoTestimonials from '@/components/VideoTestimonials';
 import { AnimatedSection } from '@/components/AnimatedSection';
+
+// Lazy load componentes pesados (client-side only para evitar erros de SSR)
+const EmpreendimentoCard = dynamic(() => import("@/components/EmpreendimentoCard"), {
+  loading: () => <div className="h-96 bg-gray-100 rounded-xl animate-pulse" />,
+  ssr: false
+});
+const LogosCarousel = dynamic(() => import('@/components/LogosCarousel'), {
+  loading: () => <div className="h-32 bg-gray-100 rounded-xl animate-pulse" />,
+  ssr: false
+});
+const VideoTestimonials = dynamic(() => import('@/components/VideoTestimonials'), {
+  loading: () => <div className="h-screen bg-gray-50 animate-pulse" />,
+  ssr: false
+});
+const AnunciarForm = dynamic(() => import("@/components/AnunciarForm"), {
+  loading: () => (
+    <div className="space-y-4 animate-pulse">
+      <div className="h-12 bg-gray-200 rounded-xl"></div>
+      <div className="h-12 bg-gray-200 rounded-xl"></div>
+      <div className="h-32 bg-gray-200 rounded-xl"></div>
+      <div className="h-12 bg-gray-200 rounded-xl"></div>
+    </div>
+  ),
+  ssr: false
+});
 
 // Placeholders SVG otimizados (< 1KB cada, substituem Unsplash)
 import { PLACEHOLDERS } from '@/utils/placeholders';
@@ -125,18 +147,50 @@ export default function HomeClient({
 
   return (
     <>
-      {/* Hero Section com imagem em largura total */}
+      {/* Hero Section - Above the Fold com imagem otimizada */}
       <AnimatedSection as="section" className="relative h-[65vh] min-h-[680px] bg-gray-900">
-        {/* Imagem de fundo */}
-        <Image
-          src="/images/banners/balneario-camboriu.webp" 
-          alt="Imóveis de alto padrão em Balneário Camboriú" 
-          fill
-          priority
-          sizes="100vw"
-          className="object-cover"
-          quality={90}
-        />
+        {/* Imagem de fundo otimizada para mobile-first com picture para servir tamanhos adequados */}
+        <picture>
+          <source 
+            media="(max-width: 640px)" 
+            srcSet="/images/banners/optimized/balneario-camboriu-mobile.avif"
+            type="image/avif"
+          />
+          <source 
+            media="(max-width: 640px)" 
+            srcSet="/images/banners/optimized/balneario-camboriu-mobile.webp"
+            type="image/webp"
+          />
+          <source 
+            media="(max-width: 1024px)" 
+            srcSet="/images/banners/optimized/balneario-camboriu-tablet.avif"
+            type="image/avif"
+          />
+          <source 
+            media="(max-width: 1024px)" 
+            srcSet="/images/banners/optimized/balneario-camboriu-tablet.webp"
+            type="image/webp"
+          />
+          <source 
+            media="(min-width: 1025px)" 
+            srcSet="/images/banners/optimized/balneario-camboriu-desktop.avif"
+            type="image/avif"
+          />
+          <source 
+            media="(min-width: 1025px)" 
+            srcSet="/images/banners/optimized/balneario-camboriu-desktop.webp"
+            type="image/webp"
+          />
+          <Image
+            src="/images/banners/optimized/balneario-camboriu-desktop.webp" 
+            alt="Imóveis de alto padrão em Balneário Camboriú" 
+            fill
+            priority
+            sizes="100vw"
+            className="object-cover"
+            quality={85}
+          />
+        </picture>
         
         {/* Overlay gradiente */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70 z-10"></div>
@@ -203,12 +257,25 @@ export default function HomeClient({
         />
       </AnimatedSection>
       
-      {/* Empreendimentos em Destaque */}
+      {/* Empreendimentos em Destaque - Lazy loading otimizado */}
       <LazySection
         as="section"
         className="py-24 md:py-28 lg:py-32 bg-white"
-        rootMargin="320px 0px"
-        fallback={<div className="py-24 md:py-28 lg:py-32 bg-white" />}
+        rootMargin="500px 0px"
+        fallback={
+          <div className="py-24 md:py-28 lg:py-32 bg-white">
+            <div className="container mx-auto px-6 sm:px-10 md:px-16 lg:px-24 max-w-screen-2xl">
+              <div className="animate-pulse space-y-8">
+                <div className="h-8 bg-gray-200 rounded w-1/3 mx-auto"></div>
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7">
+                  {[1, 2, 3].map(i => (
+                    <div key={i} className="h-96 bg-gray-200 rounded-xl"></div>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </div>
+        }
       >
         <div className="container mx-auto px-6 sm:px-10 md:px-16 lg:px-24 max-w-screen-2xl">
           <div className="text-center mb-16 md:mb-20">
@@ -223,11 +290,19 @@ export default function HomeClient({
             </p>
           </div>
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-9 mb-12">
-            {empreendimentos.slice(0, 3).map((empreendimento) => (
-              <EmpreendimentoCard key={empreendimento.id} empreendimento={empreendimento} />
-            ))}
-          </div>
+          <Suspense fallback={
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-9 mb-12">
+              {[1, 2, 3].map(i => (
+                <div key={i} className="h-96 bg-gray-100 rounded-xl animate-pulse"></div>
+              ))}
+            </div>
+          }>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7 lg:gap-9 mb-12">
+              {empreendimentos.slice(0, 3).map((empreendimento) => (
+                <EmpreendimentoCard key={empreendimento.id} empreendimento={empreendimento} />
+              ))}
+            </div>
+          </Suspense>
           
           <div className="text-center mt-12">
             <Link 
@@ -247,8 +322,8 @@ export default function HomeClient({
       <LazySection
         as="section"
         className="py-24 md:py-28 lg:py-32 bg-gray-50"
-        rootMargin="320px 0px"
-        fallback={<div className="py-24 md:py-28 lg:py-32 bg-gray-50" />}
+        rootMargin="600px 0px"
+        fallback={<div className="py-24 md:py-28 lg:py-32 bg-gray-50 animate-pulse" />}
       >
         <div className="container mx-auto px-6 sm:px-10 md:px-16 lg:px-24 max-w-screen-2xl">
           <div className="text-center mb-16 md:mb-20">
@@ -343,8 +418,8 @@ export default function HomeClient({
       <LazySection
         as="section"
         className="relative py-24 md:py-28 lg:py-32 bg-gradient-to-b from-white via-[#F7FAFF] to-white overflow-hidden"
-        rootMargin="320px 0px"
-        fallback={<div className="relative py-24 md:py-28 lg:py-32 bg-gradient-to-b from-white via-[#F7FAFF] to-white" />}
+        rootMargin="700px 0px"
+        fallback={<div className="relative py-24 md:py-28 lg:py-32 bg-gradient-to-b from-white via-[#F7FAFF] to-white animate-pulse" />}
       >
         {/* Arcos decorativos no topo (semicículos) */}
         <div className="absolute inset-x-0 -top-[520px] h-[1040px] overflow-hidden pointer-events-none opacity-70">
@@ -409,20 +484,32 @@ export default function HomeClient({
               Selecionamos e trabalhamos com as melhores construtoras
             </h4>
           </div>
-                
-          <LogosCarousel logos={logosParceiros} />
+          
+          <Suspense fallback={
+            <div className="h-32 bg-gray-100 rounded-xl animate-pulse"></div>
+          }>
+            <LogosCarousel logos={logosParceiros} />
+          </Suspense>
         </div>
       </LazySection>
       
       {/* Depoimentos em Vídeo - Experiência Moderna tipo Rede Social */}
-      <VideoTestimonials />
+      <LazySection
+        as="section"
+        rootMargin="800px 0px"
+        fallback={<div className="h-screen bg-gray-50 animate-pulse" />}
+      >
+        <Suspense fallback={<div className="h-screen bg-gray-50 animate-pulse" />}>
+          <VideoTestimonials />
+        </Suspense>
+      </LazySection>
       
       {/* Venda seu Imóvel - CTA Premium */}
       <LazySection
         as="section"
         className="relative py-24 md:py-28 lg:py-32 overflow-hidden bg-gradient-to-br from-primary via-primary-600 to-blue-800"
-        rootMargin="320px 0px"
-        fallback={<div className="py-24 md:py-28 lg:py-32 bg-gradient-to-br from-primary via-primary-600 to-blue-800" />}
+        rootMargin="900px 0px"
+        fallback={<div className="py-24 md:py-28 lg:py-32 bg-gradient-to-br from-primary via-primary-600 to-blue-800 animate-pulse" />}
       >
         {/* Padrões decorativos de fundo sofisticados */}
         <div className="absolute inset-0">
@@ -526,7 +613,16 @@ export default function HomeClient({
               
             {/* Formulário à direita */}
             <div className="bg-white/95 backdrop-blur-sm rounded-2xl shadow-2xl p-8 md:p-10 lg:p-12 border border-white/20">
-              <AnunciarForm />
+              <Suspense fallback={
+                <div className="space-y-4 animate-pulse">
+                  <div className="h-12 bg-gray-200 rounded-xl"></div>
+                  <div className="h-12 bg-gray-200 rounded-xl"></div>
+                  <div className="h-32 bg-gray-200 rounded-xl"></div>
+                  <div className="h-12 bg-gray-200 rounded-xl"></div>
+                </div>
+              }>
+                <AnunciarForm />
+              </Suspense>
             </div>
           </div>
         </div>
@@ -536,8 +632,8 @@ export default function HomeClient({
       <LazySection
         as="section"
         className="relative py-24 md:py-32 lg:py-36 overflow-hidden bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900"
-        rootMargin="320px 0px"
-        fallback={<div className="py-24 md:py-32 lg:py-36 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900" />}
+        rootMargin="1000px 0px"
+        fallback={<div className="py-24 md:py-32 lg:py-36 bg-gradient-to-b from-gray-900 via-gray-800 to-gray-900 animate-pulse" />}
       >
         {/* Background patterns tecnológicos */}
         <div className="absolute inset-0">
@@ -696,8 +792,8 @@ export default function HomeClient({
       <LazySection
         as="section"
         className="relative overflow-hidden py-20 md:py-24 text-white bg-gradient-to-br from-primary via-primary-600 to-blue-800"
-        rootMargin="320px 0px"
-        fallback={<div className="py-20 md:py-24 bg-gradient-to-br from-primary via-primary-600 to-blue-800" />}
+        rootMargin="1200px 0px"
+        fallback={<div className="py-20 md:py-24 bg-gradient-to-br from-primary via-primary-600 to-blue-800 animate-pulse" />}
       >
         {/* Background minimalista */}
         <div className="pointer-events-none absolute inset-0">

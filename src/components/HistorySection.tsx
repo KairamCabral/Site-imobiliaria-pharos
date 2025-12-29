@@ -18,12 +18,36 @@ export const HistorySection: React.FC = () => {
             className="relative"
           >
             <div className="relative h-[500px] rounded-2xl overflow-hidden shadow-2xl">
-              <Image 
-                src="/images/banners/balneario-camboriu.webp" 
-                alt="Balneário Camboriú" 
-                fill
-                className="object-cover"
-              />
+              <picture>
+                <source 
+                  media="(max-width: 640px)" 
+                  srcSet="/images/banners/optimized/balneario-camboriu-mobile.avif"
+                  type="image/avif"
+                />
+                <source 
+                  media="(max-width: 640px)" 
+                  srcSet="/images/banners/optimized/balneario-camboriu-mobile.webp"
+                  type="image/webp"
+                />
+                <source 
+                  media="(min-width: 641px)" 
+                  srcSet="/images/banners/optimized/balneario-camboriu-tablet.avif"
+                  type="image/avif"
+                />
+                <source 
+                  media="(min-width: 641px)" 
+                  srcSet="/images/banners/optimized/balneario-camboriu-tablet.webp"
+                  type="image/webp"
+                />
+                <Image 
+                  src="/images/banners/optimized/balneario-camboriu-tablet.webp" 
+                  alt="Balneário Camboriú" 
+                  fill
+                  className="object-cover"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
+                  quality={85}
+                />
+              </picture>
               <div className="absolute inset-0 bg-gradient-to-t from-pharos-navy-900/40 to-transparent" />
             </div>
             

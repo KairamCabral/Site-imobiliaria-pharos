@@ -141,7 +141,10 @@ export default function CardMediaCarousel({
       aria-label={`Galeria do imóvel ${titulo || tipoImovel || propertyId}`}
       tabIndex={canNavigate ? 0 : -1}
       onKeyDown={handleKeyDown}
-      style={canNavigate ? { touchAction: "pan-y", contentVisibility: "auto" } : { contentVisibility: "auto" }}
+      style={{
+        touchAction: canNavigate ? "pan-y pinch-zoom" : "auto",
+        contentVisibility: "auto"
+      }}
       data-touch-action={canNavigate ? "pan-y" : undefined}
       data-card-control="true"
     >

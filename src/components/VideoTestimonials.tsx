@@ -152,7 +152,8 @@ const VideoCard: React.FC<VideoCardProps> = ({ depoimento, isInView }) => {
           loop
           muted={isMuted}
           playsInline
-          preload="metadata"
+          preload="none"
+          loading="lazy"
           onClick={handlePlayPause}
         />
 

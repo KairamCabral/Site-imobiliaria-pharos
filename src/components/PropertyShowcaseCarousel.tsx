@@ -176,15 +176,24 @@ export function PropertyShowcaseCarousel({
             {/* CARROSSEL 100% MANUAL - BLOQUEIO TOTAL DE AUTOPLAY */}
             {/* Wrapper para suportar gesto de trackpad (2 dedos) horizontal */}
             <div
-              className="overscroll-x-contain touch-pan-x"
+              className="overscroll-x-contain"
               onWheel={useCallback((e: React.WheelEvent<HTMLDivElement>) => {
-                // traduz gesto de trackpad horizontal (ou Shift+scroll) em next/prev
                 const activeSwiper = (swiperRef.current as any) || null;
                 if (!activeSwiper) return;
+                
                 const absX = Math.abs(e.deltaX);
                 const absY = Math.abs(e.deltaY);
-                const horizontal = absX > absY || e.shiftKey;
-                if (!horizontal) return;
+                
+                // ✅ Apenas interceptar se for MUITO mais horizontal que vertical
+                // Isso permite scroll vertical normal sobre os cards
+                const isStronglyHorizontal = absX > absY * 2 || e.shiftKey;
+                
+                if (!isStronglyHorizontal) {
+                  // Permitir scroll vertical normal
+                  return;
+                }
+                
+                // Apenas prevenir se for claramente horizontal
                 e.preventDefault();
                 if (e.deltaX > 10 || (e.shiftKey && e.deltaY > 10)) {
                   activeSwiper.slideNext();
@@ -315,20 +324,6 @@ export function PropertyShowcaseCarousel({
           </div>
         )}
       </div>
-
-      <style jsx global>{`
-        #${sectionId} .swiper-pagination-bullet {
-          background: rgba(9, 34, 90, 0.2);
-          opacity: 1;
-          width: 8px;
-          height: 8px;
-        }
-        #${sectionId} .swiper-pagination-bullet-active {
-          background: #054ada;
-          width: 18px;
-          border-radius: 9999px;
-        }
-      `}</style>
     </section>
   );
 }

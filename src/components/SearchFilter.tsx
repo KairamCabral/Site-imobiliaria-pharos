@@ -729,7 +729,7 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
     <section
       className={
         `container mx-auto ${isHero ? 'px-4 md:px-6 lg:px-10' : 'px-4 md:px-8 lg:px-16'} ` +
-        `${isHero ? 'pt-1 pb-20 md:pt-6 md:pb-12' : 'pt-8 pb-28 md:pt-12 md:pb-16'} ` +
+        `${isHero ? 'pt-1 pb-28 md:pt-6 md:pb-12' : 'pt-8 pb-36 md:pt-12 md:pb-16'} ` +
         `relative`
       }
     >
@@ -1612,7 +1612,7 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
           <div className="flex items-center gap-3">
             <button
               onClick={openDrawer}
-              className="flex items-center justify-center h-12 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium flex-shrink-0"
+              className="flex items-center justify-center h-12 px-4 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium flex-shrink-0 transition-colors touch-manipulation"
               aria-label="Abrir filtros avançados"
             >
               <FunnelIcon className="w-5 h-5 mr-2" />
@@ -1620,7 +1620,7 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
             </button>
             <button
               onClick={buscarImoveis}
-              className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary-600 text-white font-semibold shadow-md transition-all"
+              className="flex-1 h-12 rounded-xl bg-primary hover:bg-primary-600 text-white font-semibold shadow-md transition-all touch-manipulation"
               aria-label="Buscar imóveis"
             >
               Buscar imóveis

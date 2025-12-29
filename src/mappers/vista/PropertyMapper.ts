@@ -801,28 +801,17 @@ export function mapVistaToProperty(vista: VistaImovel): Property {
   
   // Características da localização (infraestrutura do condomínio)
   // Vista pode retornar array ou objeto em "InfraEstrutura"
-  // #region agent log
-  if (vista.InfraEstrutura && process.env.NODE_ENV === 'development') {
-    fetch('http://127.0.0.1:7242/ingest/a4fd5798-c3d5-4a5f-af3e-bda690d25fd1',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'PropertyMapper.ts:800',message:'InfraEstrutura RAW',data:{Codigo:vista.Codigo,InfraEstrutura:vista.InfraEstrutura,type:typeof vista.InfraEstrutura,isArray:Array.isArray(vista.InfraEstrutura)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H1-H2-H5'})}).catch(()=>{});
-  }
-  // #endregion
   
   if (Array.isArray(vista.InfraEstrutura)) {
     vista.InfraEstrutura.filter(Boolean).forEach(item => addLocation(item as string));
   } else if (vista.InfraEstrutura && typeof vista.InfraEstrutura === 'object') {
     Object.entries(vista.InfraEstrutura).forEach(([key, value]) => {
       if (!parseBoolean(value) && value !== 'Sim') {
-        // #region agent log
-        fetch('http://127.0.0.1:7242/ingest/a4fd5798-c3d5-4a5f-af3e-bda690d25fd1',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'PropertyMapper.ts:810',message:'InfraEstrutura SKIP',data:{Codigo:vista.Codigo,key,value,parseBoolean:parseBoolean(value)},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H2'})}).catch(()=>{});
-        // #endregion
         return;
       }
 
       const normalized = normalizeKey(key);
       const label = infraAliases[normalized] || cleanString(key) || key;
-      // #region agent log
-      fetch('http://127.0.0.1:7242/ingest/a4fd5798-c3d5-4a5f-af3e-bda690d25fd1',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({location:'PropertyMapper.ts:817',message:'InfraEstrutura MAP',data:{Codigo:vista.Codigo,keyOriginal:key,normalized,label,value},timestamp:Date.now(),sessionId:'debug-session',hypothesisId:'H2-H3'})}).catch(()=>{});
-      // #endregion
       addLocation(label);
     });
   }

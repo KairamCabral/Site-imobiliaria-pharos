@@ -85,24 +85,24 @@ export default function PropertyFeatures({ property }: PropertyFeaturesProps) {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6 overflow-x-hidden">
       
       {/* Características do Imóvel */}
       {activeFeatures.length > 0 && (
-        <section className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm">
-          <h2 className="text-xl font-normal text-gray-900 mb-6 pb-4 border-b border-gray-100">
+        <section className="bg-white rounded-xl border border-gray-100 p-4 sm:p-6 md:p-8 shadow-sm overflow-x-hidden">
+          <h2 className="text-lg md:text-xl font-normal text-gray-900 mb-4 md:mb-6 pb-3 md:pb-4 border-b border-gray-100">
             Características do Imóvel
           </h2>
           
           {/* Grid minimalista */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-3 md:gap-y-4 max-w-full">
             {activeFeatures.map((label) => (
               <div
                 key={label}
-                className="flex items-center gap-2 text-sm text-gray-700"
+                className="flex items-center gap-2 text-xs sm:text-sm text-gray-700 min-w-0"
               >
                 <Check className="w-4 h-4 text-green-600 flex-shrink-0" strokeWidth={2} />
-                <span>{label}</span>
+                <span className="break-words overflow-wrap-anywhere">{label}</span>
               </div>
             ))}
           </div>
@@ -111,20 +111,20 @@ export default function PropertyFeatures({ property }: PropertyFeaturesProps) {
 
       {/* Características da Localização */}
       {activeLocation.length > 0 && (
-        <section className="bg-white rounded-xl border border-gray-100 p-8 shadow-sm">
-          <h2 className="text-xl font-normal text-gray-900 mb-6 pb-4 border-b border-gray-100">
+        <section className="bg-white rounded-xl border border-gray-100 p-4 sm:p-6 md:p-8 shadow-sm overflow-x-hidden">
+          <h2 className="text-lg md:text-xl font-normal text-gray-900 mb-4 md:mb-6 pb-3 md:pb-4 border-b border-gray-100">
             Características da Localização
           </h2>
           
           {/* Grid minimalista */}
-          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-4">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-4 md:gap-x-6 gap-y-3 md:gap-y-4 max-w-full">
             {activeLocation.map((label) => (
               <div
                 key={label}
-                className="flex items-center gap-2 text-sm text-gray-700"
+                className="flex items-center gap-2 text-xs sm:text-sm text-gray-700 min-w-0"
               >
                 <Check className="w-4 h-4 text-purple-600 flex-shrink-0" strokeWidth={2} />
-                <span>{label}</span>
+                <span className="break-words overflow-wrap-anywhere">{label}</span>
               </div>
             ))}
           </div>

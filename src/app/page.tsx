@@ -4,8 +4,8 @@ import { sortByPriority } from '@/utils/propertyPriority';
 import type { Imovel } from '@/types';
 import { listarEmpreendimentos } from '@/data/empreendimentos';
 
+// Cache por 5 minutos para melhor performance
 export const revalidate = 300;
-export const dynamic = 'force-dynamic';
 
 type CacheLayer = 'memory' | 'redis' | 'origin';
 
@@ -15,18 +15,11 @@ type SectionMeta = {
 };
 
 const DEFAULT_LIMIT = 6;
-const FETCH_LIMIT = 200;
+const FETCH_LIMIT = 300; // ✅ Aumentado para garantir que TODOS os exclusivos sejam incluídos (incluindo os que estão mais distantes na ordenação)
 
 function pickExclusiveProperties(list: Imovel[], limit: number = DEFAULT_LIMIT): Imovel[] {
   const exclusivos = list.filter((item) => item.exclusivo === true);
-
-  if (exclusivos.length === 0) {
-    return [...list]
-      .sort((a, b) => (b.preco ?? 0) - (a.preco ?? 0))
-      .slice(0, limit);
-  }
-
-  return [...exclusivos].sort(sortByPriority as any).slice(0, limit);
+  return [...exclusivos].sort(sortByPriority as any);
 }
 
 function pickSuperHighlights(list: Imovel[], limit: number = DEFAULT_LIMIT): Imovel[] {
@@ -70,29 +63,42 @@ function buildMeta(fetchedAt: number | undefined, cacheLayer: CacheLayer): Secti
 }
 
 export default async function HomePage() {
-  const [balnearioData, frenteMarData, empreendimentosResult] = await Promise.all([
-    getCachedPropertyList(
-      {
-        city: 'Balneário Camboriú',
-        sortBy: 'updatedAt',
-        sortOrder: 'desc',
-        providersToUse: ['vista-only'], // Home usa apenas Vista
-      },
-      { page: 1, limit: FETCH_LIMIT },
-    ),
-    getCachedPropertyList(
-      {
-        sortBy: 'price',
-        sortOrder: 'desc',
-        providersToUse: ['vista-only'], // Home usa apenas Vista
-      },
-      { page: 1, limit: FETCH_LIMIT },
-    ),
-    listarEmpreendimentos({ page: 1, limit: 6 }),
-  ]);
+  // Usando try-catch para evitar travar a página
+  let balnearioData, frenteMarData, empreendimentosResult;
+  
+  try {
+    [balnearioData, frenteMarData, empreendimentosResult] = await Promise.all([
+      getCachedPropertyList(
+        {
+          city: 'Balneário Camboriú',
+          sortBy: 'updatedAt',
+          sortOrder: 'desc',
+          providersToUse: ['vista-only'],
+        },
+        { page: 1, limit: FETCH_LIMIT },
+      ),
+      getCachedPropertyList(
+        {
+          city: 'Balneário Camboriú',
+          sortBy: 'price',
+          sortOrder: 'desc',
+          providersToUse: ['vista-only'],
+        },
+        { page: 1, limit: FETCH_LIMIT },
+      ),
+      listarEmpreendimentos({ page: 1, limit: 6 }),
+    ]);
+  } catch (error) {
+    console.error('❌ [HomePage] Erro ao carregar dados:', error);
+    // Fallback com dados vazios
+    balnearioData = { properties: [], pagination: { page: 1, limit: FETCH_LIMIT, total: 0, totalPages: 0 }, cacheLayer: 'origin' as const, fetchedAt: Date.now() };
+    frenteMarData = { properties: [], pagination: { page: 1, limit: FETCH_LIMIT, total: 0, totalPages: 0 }, cacheLayer: 'origin' as const, fetchedAt: Date.now() };
+    empreendimentosResult = { items: [], pagination: { page: 1, limit: 6, total: 0, totalPages: 0 } };
+  }
 
   const empreendimentos = empreendimentosResult;
 
+  // Usar dados de Balneário Camboriú para todas as seções
   const exclusivos = pickExclusiveProperties(balnearioData.properties);
   const superDestaque = pickSuperHighlights(balnearioData.properties);
   const frenteMar = pickFrontSea(frenteMarData.properties);

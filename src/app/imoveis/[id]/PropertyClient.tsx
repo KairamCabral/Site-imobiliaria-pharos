@@ -584,21 +584,21 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
       />
 
       {/* Conteúdo Principal */}
-      <div className="max-w-7xl mx-auto px-4 py-8">
-        <div className="grid lg:grid-cols-3 gap-8">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 py-6 md:py-8 overflow-x-hidden">
+        <div className="grid lg:grid-cols-3 gap-6 md:gap-8">
           {/* Coluna Principal */}
           <div className="lg:col-span-2 space-y-6">
             {/* Título e Localização */}
             <div>
-              <div className="relative lg:flex lg:items-start lg:justify-between lg:gap-3">
-                <div className="min-w-0">
-                  <h1 className="text-3xl lg:text-4xl font-light text-gray-900 mb-3">
+              <div className="relative lg:flex lg:items-start lg:justify-between lg:gap-3 overflow-x-hidden">
+                <div className="min-w-0 max-w-full pr-20 lg:pr-0">
+                  <h1 className="text-2xl sm:text-3xl lg:text-4xl font-light text-gray-900 mb-3 break-words">
                     {title}
                   </h1>
 
                   <div className="flex items-start gap-2 text-gray-600 mb-3">
                     <MapPin className="w-4 h-4 mt-1 flex-shrink-0" />
-                    <p className="text-sm">
+                    <p className="text-xs sm:text-sm break-words max-w-full">
                       {property.address?.street ?? ''}
                       {property.address?.street && property.address?.number ? `, ${property.address.number}` : ''}
                       {property.address?.street ? ' - ' : ''}
@@ -664,19 +664,19 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
               </p>
 
               {(typeof property.pricing?.condo === 'number' || typeof property.pricing?.iptu === 'number') && (
-                <div className="flex flex-wrap gap-x-6 gap-y-2 mt-4 text-sm text-gray-600">
+                <div className="flex flex-wrap gap-x-4 sm:gap-x-6 gap-y-2 mt-4 text-xs sm:text-sm text-gray-600 max-w-full">
                   {typeof property.pricing?.condo === 'number' && (
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-light">Condomínio</span>
-                      <span className="font-normal text-gray-900">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="font-light whitespace-nowrap">Condomínio</span>
+                      <span className="font-normal text-gray-900 break-words">
                         {formatCurrencyBRL(property.pricing.condo)}
                       </span>
                     </div>
                   )}
                   {typeof property.pricing?.iptu === 'number' && (
-                    <div className="flex items-center gap-1.5">
-                      <span className="font-light">IPTU</span>
-                      <span className="font-normal text-gray-900">
+                    <div className="flex items-center gap-1.5 min-w-0">
+                      <span className="font-light whitespace-nowrap">IPTU</span>
+                      <span className="font-normal text-gray-900 break-words">
                         {formatCurrencyBRL(property.pricing.iptu)}
                       </span>
                     </div>
@@ -712,12 +712,12 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
                   </div>
                 }
               >
-                <div className="bg-white rounded-2xl border border-gray-200 p-8">
-                  <h2 className="text-2xl font-light text-gray-900 mb-6 flex items-center gap-3">
-                    <div className="w-1 h-8 bg-gradient-to-b from-pharos-blue-500 to-pharos-blue-600 rounded-full" />
+                <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8 overflow-x-hidden">
+                  <h2 className="text-xl md:text-2xl font-light text-gray-900 mb-4 md:mb-6 flex items-center gap-3">
+                    <div className="w-1 h-6 md:h-8 bg-gradient-to-b from-pharos-blue-500 to-pharos-blue-600 rounded-full" />
                     Descrição
                   </h2>
-                  <p className="text-gray-600 leading-relaxed whitespace-pre-line">
+                  <p className="text-gray-600 text-sm sm:text-base leading-relaxed whitespace-pre-line break-words overflow-wrap-anywhere max-w-full">
                     {property.description}
                   </p>
                 </div>
@@ -742,17 +742,17 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
 
             {/* Empreendimento relacionado + unidades disponíveis */}
             {property.buildingName && (
-              <div className="bg-white rounded-2xl border border-gray-200 p-8 space-y-6">
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-12 h-12 rounded-full bg-pharos-blue-50 flex items-center justify-center text-pharos-blue-500">
-                      <Building2 className="w-6 h-6" />
+              <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8 space-y-4 md:space-y-6 overflow-x-hidden">
+                <div className="flex flex-wrap items-center justify-between gap-3 md:gap-4">
+                  <div className="flex items-center gap-2 md:gap-3 min-w-0 flex-1">
+                    <div className="w-10 h-10 md:w-12 md:h-12 rounded-full bg-pharos-blue-50 flex items-center justify-center text-pharos-blue-500 flex-shrink-0">
+                      <Building2 className="w-5 h-5 md:w-6 md:h-6" />
                     </div>
-                    <div>
-                      <h2 className="text-2xl font-light text-gray-900">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-lg md:text-2xl font-light text-gray-900 truncate">
                         {property.buildingName}
                       </h2>
-                      <p className="text-sm text-gray-500">
+                      <p className="text-xs md:text-sm text-gray-500">
                         Empreendimento
                       </p>
                     </div>
@@ -768,7 +768,7 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
                 </div>
 
                 {(property as any)?.buildingDescription && (
-                  <p className="text-gray-600 leading-relaxed text-sm lg:text-base">
+                  <p className="text-gray-600 leading-relaxed text-sm lg:text-base break-words overflow-wrap-anywhere max-w-full">
                     {(property as any).buildingDescription}
                   </p>
                 )}
@@ -794,14 +794,21 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
                   </div>
                 ) : buildingUnits.length > 0 ? (
                   <div
-                    className="overscroll-x-contain touch-pan-x"
+                    className="overscroll-x-contain"
                     onWheel={(e) => {
                       const sw = recoSwiperRef.current;
                       if (!sw) return;
+                      
                       const absX = Math.abs(e.deltaX);
                       const absY = Math.abs(e.deltaY);
-                      const horizontal = absX > absY || e.shiftKey;
-                      if (!horizontal) return;
+                      
+                      // ✅ Apenas interceptar se for MUITO mais horizontal que vertical
+                      const isStronglyHorizontal = absX > absY * 2 || e.shiftKey;
+                      
+                      if (!isStronglyHorizontal) {
+                        return;
+                      }
+                      
                       e.preventDefault();
                       if (e.deltaX > 10 || (e.shiftKey && e.deltaY > 10)) sw.slideNext();
                       else if (e.deltaX < -10 || (e.shiftKey && e.deltaY < -10)) sw.slidePrev();
@@ -861,8 +868,8 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
 
             {/* Características adicionais */}
             {(property as any)?.diferenciais?.length > 0 && (
-              <div className="bg-white rounded-2xl border border-gray-200 p-8">
-                <h3 className="text-lg font-medium text-gray-900 mb-4 flex items-center gap-2">
+              <div className="bg-white rounded-2xl border border-gray-200 p-4 sm:p-6 md:p-8 overflow-x-hidden">
+                <h3 className="text-base md:text-lg font-medium text-gray-900 mb-3 md:mb-4 flex items-center gap-2">
                   <Sparkles className="w-4 h-4 text-pharos-blue-500" />
                   Diferenciais do Imóvel
                 </h3>
@@ -965,14 +972,24 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
 
             {(isRecentMode ? recentViewed.length > 0 : (smartRelated.length > 0 || clientReco.length > 0)) ? (
             <div
-              className="overscroll-x-contain touch-pan-x"
+              className="overscroll-x-contain"
               onWheel={(e) => {
                 const sw = recoSwiperRef.current;
                 if (!sw) return;
+                
                 const absX = Math.abs(e.deltaX);
                 const absY = Math.abs(e.deltaY);
-                const horizontal = absX > absY || e.shiftKey;
-                if (!horizontal) return;
+                
+                // ✅ Apenas interceptar se for MUITO mais horizontal que vertical
+                // Isso permite scroll vertical normal sobre os cards
+                const isStronglyHorizontal = absX > absY * 2 || e.shiftKey;
+                
+                if (!isStronglyHorizontal) {
+                  // Permitir scroll vertical normal
+                  return;
+                }
+                
+                // Apenas prevenir se for claramente horizontal
                 e.preventDefault();
                 if (e.deltaX > 10 || (e.shiftKey && e.deltaY > 10)) sw.slideNext();
                 else if (e.deltaX < -10 || (e.shiftKey && e.deltaY < -10)) sw.slidePrev();
