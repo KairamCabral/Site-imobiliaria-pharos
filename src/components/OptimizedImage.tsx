@@ -46,19 +46,21 @@ export function OptimizedImage(props: OptimizedImageProps) {
     src.includes('cdn.vistahost.com.br') ||
     src.includes('vistahost.com.br')
   )) {
-    // ✅ Adicionar parâmetros de otimização se o CDN suportar
+    // ✅ OTIMIZAÇÃO AGRESSIVA: Reduzir tamanhos e qualidade
     let optimizedSrc = src;
+    const targetWidth = fill ? 800 : 600; // Reduzido de 1200/800
+    const targetQuality = 60; // Reduzido de 75
     
     // Para B-CDN (DWV), adiciona parâmetros de resize e qualidade
-    if (src.includes('b-cdn.net') && !src.includes('?')) {
-      const width = fill ? 1200 : 800;
-      optimizedSrc = `${src}?width=${width}&quality=75&format=webp`;
+    if (src.includes('b-cdn.net')) {
+      const separator = src.includes('?') ? '&' : '?';
+      optimizedSrc = `${src}${separator}width=${targetWidth}&quality=${targetQuality}&format=webp`;
     }
     
     // Para Vista CDN, adiciona parâmetros se disponível
-    if (src.includes('vistahost.com.br') && !src.includes('?')) {
-      const width = fill ? 1200 : 800;
-      optimizedSrc = `${src}?w=${width}&q=75&fm=webp`;
+    if (src.includes('vistahost.com.br')) {
+      const separator = src.includes('?') ? '&' : '?';
+      optimizedSrc = `${src}${separator}w=${targetWidth}&q=${targetQuality}&fm=webp`;
     }
     
     const imgStyle: React.CSSProperties = {
@@ -80,6 +82,9 @@ export function OptimizedImage(props: OptimizedImageProps) {
         style={imgStyle}
         loading={loading || (priority ? 'eager' : 'lazy')}
         draggable={draggable}
+        // ✅ Adicionar width/height para evitar CLS
+        width={fill ? undefined : 400}
+        height={fill ? undefined : 300}
         {...(restProps as any)}
       />
     );

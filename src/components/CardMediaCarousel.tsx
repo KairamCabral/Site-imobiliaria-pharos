@@ -135,7 +135,7 @@ export default function CardMediaCarousel({
   return (
     <div
       ref={setHostRef}
-      className="group relative w-full h-[220px] md:h-[240px] min-h-[220px] md:min-h-[240px] max-h-[220px] md:max-h-[240px] overflow-hidden bg-pharos-base-off focus:outline-none rounded-t-2xl"
+      className="group relative w-full h-[200px] sm:h-[220px] md:h-[240px] min-h-[200px] sm:min-h-[220px] md:min-h-[240px] max-h-[200px] sm:max-h-[220px] md:max-h-[240px] overflow-hidden bg-pharos-base-off focus:outline-none rounded-t-2xl"
       role="group"
       aria-roledescription="carousel"
       aria-label={`Galeria do imóvel ${titulo || tipoImovel || propertyId}`}
@@ -153,8 +153,8 @@ export default function CardMediaCarousel({
           src={currentImage.src}
           alt={currentImage.alt || titulo || `${tipoImovel} ${propertyId}`}
           fill
-          sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-          className="object-cover group-hover:scale-105 transition-transform duration-300 ease-out"
+          sizes="(max-width: 640px) 95vw, (max-width: 768px) 90vw, (max-width: 1024px) 48vw, (max-width: 1280px) 32vw, 28vw"
+          className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300 ease-out"
           priority={priority && currentIndex === 0}
           loading={priority && currentIndex === 0 ? "eager" : "lazy"}
           draggable={false}
@@ -179,41 +179,40 @@ export default function CardMediaCarousel({
       {/* Slot para overlays (selo, código, favorito, etc.) */}
       {children}
 
-      {/* Controles visuais (mostram sempre; ficam desabilitados quando não há 2+ imagens) */}
-      <>
-        <button
-          type="button"
-          onClick={() => prev()}
-          disabled={!canNavigate}
-          data-card-control="true"
-          className="absolute left-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 flex items-center justify-center bg-white/95 hover:bg-white text-pharos-navy-900 rounded-full shadow-lg backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-200 md:group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 md:group-hover:pointer-events-auto group-focus-within:pointer-events-auto focus:pointer-events-auto md:group-hover/outer:opacity-100 group-focus-within/outer:opacity-100 md:group-hover/outer:pointer-events-auto group-focus-within/outer:pointer-events-auto hover:scale-110 active:scale-95 border border-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary disabled:opacity-50 disabled:pointer-events-none"
-          aria-label="Ver imagem anterior do imóvel"
-          title="Imagem anterior"
-          aria-disabled={!canNavigate}
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden="true" data-card-control="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
+      {/* Controles visuais - Sempre visíveis quando há 2+ imagens */}
+      {canNavigate && (
+        <>
+          <button
+            type="button"
+            onClick={() => prev()}
+            data-card-control="true"
+            className="absolute left-2 sm:left-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-white/95 hover:bg-white text-pharos-navy-900 rounded-full shadow-lg backdrop-blur-md z-50 opacity-90 md:opacity-0 md:pointer-events-none transition-all duration-200 md:group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 md:group-hover:pointer-events-auto group-focus-within:pointer-events-auto focus:pointer-events-auto md:group-hover/outer:opacity-100 group-focus-within/outer:opacity-100 md:group-hover/outer:pointer-events-auto group-focus-within/outer:pointer-events-auto hover:scale-110 active:scale-95 border border-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary touch-manipulation"
+            aria-label="Ver imagem anterior do imóvel"
+            title="Imagem anterior"
+          >
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} aria-hidden="true" data-card-control="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
+            </svg>
+          </button>
 
-        <button
-          type="button"
-          onClick={() => next()}
-          disabled={!canNavigate}
-          data-card-control="true"
-          className="absolute right-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-11 h-11 flex items-center justify-center bg-white/95 hover:bg-white text-pharos-navy-900 rounded-full shadow-lg backdrop-blur-md z-50 opacity-0 pointer-events-none transition-opacity duration-200 md:group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 md:group-hover:pointer-events-auto group-focus-within:pointer-events-auto focus:pointer-events-auto md:group-hover/outer:opacity-100 group-focus-within/outer:opacity-100 md:group-hover/outer:pointer-events-auto group-focus-within/outer:pointer-events-auto hover:scale-110 active:scale-95 border border-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary disabled:opacity-50 disabled:pointer-events-none"
-          aria-label="Ver próxima imagem do imóvel"
-          title="Próxima imagem"
-          aria-disabled={!canNavigate}
-        >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} data-card-control="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
+          <button
+            type="button"
+            onClick={() => next()}
+            data-card-control="true"
+            className="absolute right-2 sm:right-3 top-1/2 -translate-y-1/2 min-w-[44px] min-h-[44px] w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center bg-white/95 hover:bg-white text-pharos-navy-900 rounded-full shadow-lg backdrop-blur-md z-50 opacity-90 md:opacity-0 md:pointer-events-none transition-all duration-200 md:group-hover:opacity-100 group-focus-within:opacity-100 focus:opacity-100 md:group-hover:pointer-events-auto group-focus-within:pointer-events-auto focus:pointer-events-auto md:group-hover/outer:opacity-100 group-focus-within/outer:opacity-100 md:group-hover/outer:pointer-events-auto group-focus-within/outer:pointer-events-auto hover:scale-110 active:scale-95 border border-white/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-primary touch-manipulation"
+            aria-label="Ver próxima imagem do imóvel"
+            title="Próxima imagem"
+          >
+            <svg className="w-4 h-4 sm:w-5 sm:h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5} data-card-control="true">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+            </svg>
+          </button>
+        </>
+      )}
 
         {/* Indicadores minimalistas (apenas se houver 2+ imagens) */}
         {canNavigate && (
-          <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2 z-30 bg-transparent" role="tablist" aria-label="Galeria de imagens">
+          <div className="absolute bottom-3 sm:bottom-4 left-0 right-0 flex justify-center gap-1.5 sm:gap-2 z-30 bg-transparent pointer-events-none" role="tablist" aria-label="Galeria de imagens">
               {carouselImages.map((image, index) => (
                 <button
                   key={image.src}
@@ -221,18 +220,17 @@ export default function CardMediaCarousel({
                   role="tab"
                   onClick={() => goTo(index)}
                   data-card-control="true"
-                  className={`min-w-[32px] min-h-[32px] flex items-center justify-center transition-all duration-200 bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/60 ${currentIndex === index ? "px-2" : "px-1.5"}`}
+                  className={`min-w-[32px] min-h-[32px] flex items-center justify-center transition-all duration-200 bg-transparent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-white/60 pointer-events-auto touch-manipulation ${currentIndex === index ? "px-2" : "px-1.5"}`}
                   aria-label={`Ver imagem ${index + 1} de ${carouselImages.length}`}
                   aria-current={currentIndex === index ? "true" : "false"}
                   aria-selected={currentIndex === index}
                   title={`Imagem ${index + 1}`}
                 >
-                  <span data-card-control="true" className={`rounded-full transition-all duration-200 ${currentIndex === index ? "h-1.5 w-5 bg-white" : "h-1.5 w-1.5 bg-white/75 hover:bg-white/90"}`} />
+                  <span data-card-control="true" className={`rounded-full transition-all duration-200 ${currentIndex === index ? "h-1.5 w-5 sm:w-6 bg-white shadow-md" : "h-1.5 w-1.5 bg-white/80 hover:bg-white/95 shadow-sm"}`} />
                 </button>
               ))}
             </div>
         )}
-      </>
     </div>
   );
 }

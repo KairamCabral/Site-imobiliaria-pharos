@@ -21,31 +21,31 @@ export const TeamGrid: React.FC = () => {
   };
 
   return (
-    <section className="py-20 bg-gradient-to-b from-white via-slate-50/30 to-white">
-      <div className="container max-w-7xl mx-auto px-4">
+    <section className="py-12 sm:py-16 md:py-20 bg-gradient-to-b from-white via-slate-50/30 to-white">
+      <div className="container max-w-7xl mx-auto px-4 sm:px-6">
         {/* Header melhorado */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-14 md:mb-16"
         >
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-pharos-gold/10 border border-pharos-gold/20 mb-6">
+          <div className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full bg-pharos-gold/10 border border-pharos-gold/20 mb-4 sm:mb-6">
             <div className="w-2 h-2 rounded-full bg-pharos-gold animate-pulse" />
-            <span className="text-sm font-semibold text-pharos-navy-900">Nossa Equipe</span>
+            <span className="text-xs sm:text-sm font-semibold text-pharos-navy-900">Nossa Equipe</span>
           </div>
           
-          <h2 className="text-4xl md:text-5xl font-bold text-pharos-navy-900 mb-4">
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-pharos-navy-900 mb-3 sm:mb-4">
             Conheça Nossa Equipe
           </h2>
-          <p className="text-pharos-slate-600 text-lg max-w-2xl mx-auto">
+          <p className="text-pharos-slate-600 text-base sm:text-lg max-w-2xl mx-auto px-4">
             Especialistas dedicados em transformar sonhos em realidade
           </p>
         </motion.div>
 
         {/* Grid Premium */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-7 md:gap-8">
           {/* Membro destaque */}
           {featured.map((member, i) => (
             <motion.div
@@ -59,7 +59,7 @@ export const TeamGrid: React.FC = () => {
               <motion.div 
                 whileHover={{ y: -8 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                className="relative rounded-3xl overflow-hidden h-[550px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.4)] transition-shadow duration-500"
+                className="relative rounded-3xl overflow-hidden h-[480px] sm:h-[520px] md:h-[550px] shadow-[0_20px_60px_-15px_rgba(0,0,0,0.3)] hover:shadow-[0_25px_80px_-15px_rgba(0,0,0,0.4)] transition-shadow duration-500"
               >
                 {/* Badge Destaque */}
                 <div className="absolute top-6 right-6 z-20">
@@ -76,13 +76,14 @@ export const TeamGrid: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="absolute inset-0">
+                <div className="absolute inset-0 w-full h-full">
                   <Image 
                     src={member.photo}
                     alt={member.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="object-cover object-center w-full h-full group-hover:scale-110 transition-transform duration-700"
+                    style={{ objectFit: 'cover' }}
                   />
                   
                   {/* Overlay escuro apenas embaixo para destacar texto */}
@@ -147,7 +148,7 @@ export const TeamGrid: React.FC = () => {
               <motion.div
                 whileHover={{ y: -8 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 25 }}
-                className="relative rounded-3xl overflow-hidden h-[480px] shadow-[0_15px_50px_-12px_rgba(0,0,0,0.25)] hover:shadow-[0_20px_70px_-12px_rgba(0,0,0,0.35)] transition-shadow duration-500"
+                className="relative rounded-3xl overflow-hidden h-[420px] sm:h-[450px] md:h-[480px] shadow-[0_15px_50px_-12px_rgba(0,0,0,0.25)] hover:shadow-[0_20px_70px_-12px_rgba(0,0,0,0.35)] transition-shadow duration-500"
               >
                 {/* Badge Online */}
                 <div className="absolute top-5 right-5 z-20">
@@ -157,13 +158,14 @@ export const TeamGrid: React.FC = () => {
                   </div>
                 </div>
 
-                <div className="absolute inset-0">
+                <div className="absolute inset-0 w-full h-full">
                   <Image 
                     src={member.photo}
                     alt={member.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover group-hover:scale-110 transition-transform duration-700"
+                    className="object-cover object-center w-full h-full group-hover:scale-110 transition-transform duration-700"
+                    style={{ objectFit: 'cover' }}
                   />
                   
                   {/* Overlay escuro apenas embaixo para destacar texto */}

@@ -58,37 +58,49 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.variable} font-sans`}>
       <head>
-         {/* Inline Critical CSS para Above-the-Fold */}
+         {/* Inline Critical CSS EXPANDIDO para Above-the-Fold */}
          <style dangerouslySetInnerHTML={{__html: `
-           body{margin:0;font-family:Inter,system-ui,sans-serif;background:#fff}
+           *{box-sizing:border-box;margin:0;padding:0}
+           body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:#fff;color:#1f2937;line-height:1.5}
            .bg-gray-900{background-color:#111827}
+           .bg-white{background-color:#fff}
            .relative{position:relative}
+           .absolute{position:absolute}
+           .inset-0{top:0;right:0;bottom:0;left:0}
            .h-\\[65vh\\]{height:65vh}
            .min-h-\\[680px\\]{min-height:680px}
            .flex{display:flex}
            .items-center{align-items:center}
+           .items-start{align-items:flex-start}
            .justify-center{justify-content:center}
+           .object-cover{object-fit:cover}
+           .z-10{z-index:10}
+           .z-20{z-index:20}
+           .pt-20{padding-top:5rem}
+           img,picture{max-width:100%;height:auto;display:block}
+           .container{width:100%;margin-left:auto;margin-right:auto;padding-left:1.5rem;padding-right:1.5rem}
+           @media(min-width:640px){.container{max-width:640px}}
+           @media(min-width:768px){.container{max-width:768px}}
+           @media(min-width:1024px){.container{max-width:1024px}}
+           @media(min-width:1280px){.container{max-width:1280px}}
          `}} />
          
          {/* DNS Prefetch para domínios externos críticos */}
          <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
-         <link rel="dns-prefetch" href="https://www.google-analytics.com" />
          <link rel="dns-prefetch" href="https://cdn.vistahost.com.br" />
-         <link rel="dns-prefetch" href="https://dwvimagesv1.b-cdn.net" />
          
-         {/* Preconnect para recursos críticos (DNS + TCP + TLS) */}
-         <link rel="preconnect" href="https://fonts.googleapis.com" />
-         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
+         {/* Preconnect APENAS para recursos críticos do hero */}
          <link rel="preconnect" href="https://cdn.vistahost.com.br" crossOrigin="anonymous" />
          
-         {/* Preload de imagem LCP (hero banner) */}
+         {/* Preload de imagem LCP (hero banner) com imageSizes */}
          <link 
            rel="preload" 
            as="image" 
-           href="/images/banners/optimized/balneario-camboriu-desktop.avif"
+           href="/images/banners/optimized/balneario-camboriu-mobile.avif"
            type="image/avif"
            fetchPriority="high"
-           media="(min-width: 1025px)"
+           media="(max-width: 640px)"
+           imageSizes="640px"
          />
          <link 
            rel="preload" 
@@ -97,19 +109,17 @@ export default function RootLayout({
            type="image/avif"
            fetchPriority="high"
            media="(min-width: 641px) and (max-width: 1024px)"
+           imageSizes="1024px"
          />
          <link 
            rel="preload" 
            as="image" 
-           href="/images/banners/optimized/balneario-camboriu-mobile.avif"
+           href="/images/banners/optimized/balneario-camboriu-desktop.avif"
            type="image/avif"
            fetchPriority="high"
-           media="(max-width: 640px)"
+           media="(min-width: 1025px)"
+           imageSizes="1920px"
          />
-         
-         {/* Prefetch de páginas importantes */}
-         <link rel="prefetch" href="/imoveis" as="document" />
-         <link rel="prefetch" href="/empreendimentos" as="document" />
       </head>
       <body className="flex flex-col min-h-screen antialiased bg-white text-secondary-800">
         <PWAProvider>

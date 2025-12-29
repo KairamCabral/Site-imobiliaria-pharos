@@ -148,39 +148,9 @@ export default function HomeClient({
   return (
     <>
       {/* Hero Section - Above the Fold com imagem otimizada */}
-      <AnimatedSection as="section" className="relative h-[65vh] min-h-[680px] bg-gray-900">
-        {/* Imagem de fundo otimizada para mobile-first com picture para servir tamanhos adequados */}
-        <picture>
-          <source 
-            media="(max-width: 640px)" 
-            srcSet="/images/banners/optimized/balneario-camboriu-mobile.avif"
-            type="image/avif"
-          />
-          <source 
-            media="(max-width: 640px)" 
-            srcSet="/images/banners/optimized/balneario-camboriu-mobile.webp"
-            type="image/webp"
-          />
-          <source 
-            media="(max-width: 1024px)" 
-            srcSet="/images/banners/optimized/balneario-camboriu-tablet.avif"
-            type="image/avif"
-          />
-          <source 
-            media="(max-width: 1024px)" 
-            srcSet="/images/banners/optimized/balneario-camboriu-tablet.webp"
-            type="image/webp"
-          />
-          <source 
-            media="(min-width: 1025px)" 
-            srcSet="/images/banners/optimized/balneario-camboriu-desktop.avif"
-            type="image/avif"
-          />
-          <source 
-            media="(min-width: 1025px)" 
-            srcSet="/images/banners/optimized/balneario-camboriu-desktop.webp"
-            type="image/webp"
-          />
+      <AnimatedSection as="section" className="relative min-h-screen md:h-[65vh] md:min-h-[680px] bg-gray-900 overflow-hidden">
+        {/* Container com aspect ratio fixo para evitar CLS */}
+        <div className="absolute inset-0 w-full h-full">
           <Image
             src="/images/banners/optimized/balneario-camboriu-desktop.webp" 
             alt="Imóveis de alto padrão em Balneário Camboriú" 
@@ -188,18 +158,26 @@ export default function HomeClient({
             priority
             fetchPriority="high"
             sizes="100vw"
-            className="object-cover"
-            quality={85}
+            className="object-cover w-full h-full"
+            quality={75}
             placeholder="blur"
             blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSI2ODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMjAzMCIvPjwvc3ZnPg=="
+            style={{ 
+              objectFit: 'cover',
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              top: 0,
+              left: 0
+            }}
           />
-        </picture>
+        </div>
         
         {/* Overlay gradiente */}
         <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/40 to-black/70 z-10"></div>
         
         {/* Conteúdo */}
-        <div className="h-full flex items-start md:items-center pt-20 sm:pt-24 md:pt-24 pb-8 relative z-20">
+        <div className="min-h-screen md:h-full flex items-start pt-20 pb-6 md:items-center md:pt-24 md:pb-8 relative z-20">
           <SearchFilter variant="hero" />
         </div>
       </AnimatedSection>

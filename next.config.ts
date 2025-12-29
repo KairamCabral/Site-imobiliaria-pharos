@@ -79,6 +79,10 @@ const nextConfig: NextConfig = {
   experimental: {
     optimizePackageImports: ['lucide-react', 'swiper'],
   },
+  // ✅ Prevenir redirects desnecessários
+  async redirects() {
+    return [];
+  },
   images: {
     // ❌ REMOVIDO: loader customizado (causava problemas na Vercel)
     remotePatterns: imageRemotePatterns,

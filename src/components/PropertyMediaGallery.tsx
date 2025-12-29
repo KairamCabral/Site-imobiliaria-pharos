@@ -1,10 +1,16 @@
 'use client';
 
 import { useState, useCallback, useEffect, useRef } from 'react';
-import { X, Play, MapPin, Map as MapIcon, Navigation, Maximize2, ChevronLeft, ChevronRight, MessageSquare, FileText, Download, Volume2 } from 'lucide-react';
+import { X, Play, MapPin, Map as MapIcon, Navigation, Maximize2, ChevronLeft, ChevronRight, MessageSquare, FileText, Download, Volume2, ZoomIn } from 'lucide-react';
 import dynamic from 'next/dynamic';
 import { motion, AnimatePresence } from 'framer-motion';
 import { getWhatsAppLink } from '@/utils/whatsapp';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Navigation as SwiperNavigation, Pagination, Keyboard, A11y, Zoom, FreeMode } from 'swiper/modules';
+import 'swiper/css';
+import 'swiper/css/navigation';
+import 'swiper/css/pagination';
+import 'swiper/css/zoom';
 
 // Lazy load do mapa otimizado para performance
 const ProximityMap = dynamic(() => import('./ProximityMapOptimized'), { ssr: false });
@@ -292,11 +298,19 @@ export default function PropertyMediaGallery({
           >
             {/* Topbar (abas e ações) */}
             <div
-              className="flex items-center justify-between gap-3 px-4 sm:px-6 py-3 sm:py-4 pt-[calc(env(safe-area-inset-top,0px)+12px)]"
+              className="flex items-center justify-between gap-2 sm:gap-3 px-3 sm:px-6 py-2 sm:py-4 pt-[calc(env(safe-area-inset-top,0px)+8px)] sm:pt-[calc(env(safe-area-inset-top,0px)+12px)]"
               onClick={(e) => e.stopPropagation()}
             >
-              {/* Tabs */}
-              <div className="flex items-center gap-2" role="tablist" aria-label="Seções da galeria">
+              {/* Tabs - scrollable horizontal no mobile */}
+              <div 
+                className="flex items-center gap-2 overflow-x-auto scrollbar-hide flex-1 mr-2" 
+                role="tablist" 
+                aria-label="Seções da galeria"
+                style={{
+                  WebkitMaskImage: 'linear-gradient(to right, black 90%, transparent)',
+                  maskImage: 'linear-gradient(to right, black 90%, transparent)',
+                }}
+              >
                 {availableTabs.map((tab) => (
                   <button
                     key={`lb-${tab.id}`}
@@ -304,8 +318,8 @@ export default function PropertyMediaGallery({
                     role="tab"
                     aria-selected={lightboxTab === tab.id}
                     className={`
-                      flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium
-                      transition-all duration-200 whitespace-nowrap shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80
+                      flex items-center gap-1.5 sm:gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full text-xs sm:text-sm font-medium
+                      transition-all duration-200 whitespace-nowrap shadow-md focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 flex-shrink-0
                       ${lightboxTab === tab.id
                         ? 'bg-white text-gray-900'
                         : 'bg-white/80 text-gray-900/80 hover:bg-white/90 hover:text-gray-900 backdrop-blur-sm'
@@ -319,25 +333,24 @@ export default function PropertyMediaGallery({
               </div>
 
               {/* Ações */}
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2 flex-shrink-0">
                 <a
                   href={getWhatsAppLink('5547991878070', `Olá! Tenho interesse no imóvel ${propertyCode} - ${title}. Poderia me enviar mais detalhes?`)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="group inline-flex items-center gap-2 px-4 py-2.5 rounded-full bg-green-500 hover:bg-green-600 text-white font-semibold shadow-lg hover:shadow-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                  className="group inline-flex items-center gap-2 px-3 sm:px-4 py-2 sm:py-2.5 rounded-full bg-green-500 hover:bg-green-600 text-white font-semibold text-xs sm:text-sm shadow-lg hover:shadow-xl transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
                   onClick={(e) => e.stopPropagation()}
-                  aria-label="Conversar no WhatsApp. Resposta em minutos."
+                  aria-label="Conversar no WhatsApp"
                 >
                   <MessageSquare className="w-4 h-4" />
                   <span className="hidden sm:inline">WhatsApp</span>
-                  <span className="sr-only">Resposta em minutos • Sem compromisso</span>
                 </a>
             <button
               onClick={closeLightbox}
-                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80"
+                  className="p-2 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm focus:outline-none focus-visible:ring-2 focus-visible:ring-white/80 w-10 h-10 flex items-center justify-center"
               aria-label="Fechar galeria"
             >
-              <X className="w-6 h-6" />
+              <X className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
               </div>
             </div>
@@ -349,82 +362,14 @@ export default function PropertyMediaGallery({
                 Use 1 a {availableTabs.length} para alternar entre abas. Pressione Esc para fechar a galeria.
               </div>
               {lightboxTab === 'photos' && (
-                <>
-            {/* Contador */}
-                  <div className="absolute top-4 left-4 z-40 px-4 py-2 rounded-full bg-white/10 backdrop-blur-sm text-white text-sm font-medium">
-              {currentImageIndex + 1} / {images.length}
-            </div>
-
-            {/* Navegação anterior */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  prevImage();
-                }}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
-                aria-label="Foto anterior"
-              >
-                <ChevronLeft className="w-6 h-6" />
-              </button>
-            )}
-
-            {/* Imagem */}
-                  <div className="w-full h-full flex items-center justify-center">
-            <motion.img
-              key={currentImageIndex}
-                      initial={{ opacity: 0, scale: 0.95 }}
-              animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.25 }}
-              src={images[currentImageIndex]}
-              alt={`${title} - Foto ${currentImageIndex + 1}`}
-                      className="max-w-[92vw] max-h-[80vh] object-contain"
-            />
-                  </div>
-
-            {/* Navegação próxima */}
-            {images.length > 1 && (
-              <button
-                onClick={(e) => {
-                  e.stopPropagation();
-                  nextImage();
-                }}
-                      className="absolute right-4 top-1/2 -translate-y-1/2 z-40 p-3 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors backdrop-blur-sm"
-                aria-label="Próxima foto"
-              >
-                <ChevronRight className="w-6 h-6" />
-              </button>
-            )}
-
-                  {/* Miniaturas */}
-                  <div className="absolute bottom-4 left-1/2 -translate-x-1/2 z-40 flex gap-2 overflow-x-auto max-w-[90vw] px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full scrollbar-hide">
-              {images.slice(0, 10).map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setCurrentImageIndex(idx);
-                  }}
-                  className={`
-                    flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all
-                    ${idx === currentImageIndex ? 'border-white scale-110' : 'border-transparent opacity-60 hover:opacity-100'}
-                  `}
-                >
-                  <img
-                    src={img}
-                    alt={`Miniatura ${idx + 1}`}
-                    className="w-full h-full object-cover"
-                  />
-                </button>
-              ))}
-              {images.length > 10 && (
-                <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-white/20 flex items-center justify-center text-white text-xs font-medium">
-                  +{images.length - 10}
-                      </div>
-                    )}
-                  </div>
-                </>
+                <LightboxPhotos
+                  images={images}
+                  title={title}
+                  currentImageIndex={currentImageIndex}
+                  setCurrentImageIndex={setCurrentImageIndex}
+                  nextImage={nextImage}
+                  prevImage={prevImage}
+                />
               )}
 
               {lightboxTab === 'videos' && videos && (
@@ -488,6 +433,7 @@ export default function PropertyMediaGallery({
 /**
  * Layout Mosaic de Fotos (1 grande + grid de 4)
  * Largura total, sem bordas arredondadas
+ * ✅ MOBILE: Carrossel Swiper otimizado com gestos nativos e thumbnails visuais
  */
 function PhotosMosaic({
   images,
@@ -498,53 +444,196 @@ function PhotosMosaic({
   title: string;
   onImageClick: (index: number) => void;
 }) {
+  const [currentMobileSlide, setCurrentMobileSlide] = useState(0);
+  const mainSwiperRef = useRef<any>(null);
+  const thumbsSwiperRef = useRef<any>(null);
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: -20 }}
       transition={{ duration: 0.3 }}
-      className="relative grid grid-cols-1 lg:grid-cols-4 gap-0.5 h-[360px] sm:h-[460px] lg:h-[600px]"
+      className="relative"
     >
-      {/* Imagem principal (ocupa 2 colunas) */}
-      <button
-        onClick={() => onImageClick(0)}
-        className="lg:col-span-2 lg:row-span-2 relative overflow-hidden group bg-gray-200"
-      >
-        <img
-          src={images[0]}
-          alt={`${title} - Principal`}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
-        <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      </button>
+      {/* 📱 MOBILE: Carrossel Swiper com fotos completas e thumbnails */}
+      <div className="lg:hidden">
+        <div className="relative w-full bg-gray-900">
+          {/* Carrossel Principal - Fotos em Tela Cheia */}
+          <Swiper
+            modules={[SwiperNavigation, Pagination, Keyboard, A11y, Zoom, FreeMode]}
+            spaceBetween={0}
+            slidesPerView={1}
+            keyboard={{ enabled: true }}
+            zoom={{ 
+              maxRatio: 3, 
+              minRatio: 1,
+              toggle: true // Toque duplo para zoom
+            }}
+            pagination={{
+              clickable: true,
+              dynamicBullets: true,
+              dynamicMainBullets: 3,
+              el: '.swiper-pagination-mobile',
+            }}
+            onSwiper={(swiper) => {
+              mainSwiperRef.current = swiper;
+            }}
+            onSlideChange={(swiper) => {
+              setCurrentMobileSlide(swiper.activeIndex);
+              if (thumbsSwiperRef.current) {
+                thumbsSwiperRef.current.slideTo(swiper.activeIndex);
+              }
+            }}
+            className="mobile-gallery-main w-full"
+            style={{
+              height: 'auto',
+              aspectRatio: '4/3',
+              maxHeight: '70vh',
+            }}
+          >
+            {images.map((img, idx) => (
+              <SwiperSlide key={idx} className="flex items-center justify-center">
+                <div className="swiper-zoom-container w-full h-full flex items-center justify-center">
+                  <img
+                    src={img}
+                    alt={`${title} - Foto ${idx + 1}`}
+                    className="w-full h-full object-contain"
+                    loading={idx < 3 ? 'eager' : 'lazy'}
+                    style={{ 
+                      maxWidth: '100%', 
+                      maxHeight: '100%',
+                      objectFit: 'contain',
+                      touchAction: 'none' 
+                    }}
+                  />
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
 
-      {/* Grid de 4 imagens menores */}
-      {images.slice(1, 5).map((img, idx) => (
+          {/* Paginação do Swiper */}
+          <div className="swiper-pagination-mobile absolute bottom-20 left-0 right-0 z-20" />
+
+          {/* Contador de fotos */}
+          <div className="absolute top-3 right-3 z-30 px-3 py-1.5 rounded-full bg-black/70 backdrop-blur-sm text-white text-xs font-semibold shadow-lg">
+            {currentMobileSlide + 1} / {images.length}
+          </div>
+
+          {/* Botão Ver Todas em Tela Cheia */}
+          <button
+            onClick={() => onImageClick(currentMobileSlide)}
+            className="absolute top-3 left-3 z-30 px-3 py-1.5 rounded-full bg-white/90 hover:bg-white text-gray-900 text-xs font-medium shadow-lg backdrop-blur-sm flex items-center gap-1.5 active:scale-95 transition-transform"
+          >
+            <Maximize2 className="w-3.5 h-3.5" />
+            <span>Ver todas</span>
+          </button>
+
+          {/* Dica de Zoom */}
+          <button
+            className="absolute top-16 left-3 z-30 px-3 py-1.5 rounded-full bg-black/60 backdrop-blur-sm text-white text-xs font-medium flex items-center gap-1.5"
+            onClick={(e) => {
+              e.stopPropagation();
+              // Simula toque duplo para zoom
+              const zoomContainer = document.querySelector('.swiper-zoom-container');
+              if (zoomContainer) {
+                const event = new Event('dblclick', { bubbles: true });
+                zoomContainer.dispatchEvent(event);
+              }
+            }}
+          >
+            <ZoomIn className="w-3.5 h-3.5" />
+            <span>Zoom</span>
+          </button>
+
+          {/* Carrossel de Thumbnails - Navegação Visual Rápida */}
+          <div className="w-full bg-gray-900/95 py-3 px-3 border-t border-gray-800">
+            <Swiper
+              modules={[FreeMode, A11y]}
+              spaceBetween={8}
+              slidesPerView="auto"
+              freeMode={true}
+              watchSlidesProgress={true}
+              onSwiper={(swiper) => {
+                thumbsSwiperRef.current = swiper;
+              }}
+              className="mobile-gallery-thumbs"
+            >
+              {images.map((img, idx) => (
+                <SwiperSlide
+                  key={idx}
+                  style={{ width: '64px', height: '64px' }}
+                  className="cursor-pointer"
+                >
+                  <button
+                    onClick={() => {
+                      setCurrentMobileSlide(idx);
+                      if (mainSwiperRef.current) {
+                        mainSwiperRef.current.slideTo(idx);
+                      }
+                    }}
+                    className={`w-full h-full rounded-lg overflow-hidden transition-all ${
+                      idx === currentMobileSlide
+                        ? 'ring-2 ring-primary ring-offset-2 ring-offset-gray-900 opacity-100 scale-105'
+                        : 'opacity-50 hover:opacity-80'
+                    }`}
+                  >
+                    <img
+                      src={img}
+                      alt={`Miniatura ${idx + 1}`}
+                      className="w-full h-full object-cover"
+                      loading="lazy"
+                    />
+                  </button>
+                </SwiperSlide>
+              ))}
+            </Swiper>
+          </div>
+        </div>
+      </div>
+
+      {/* 💻 DESKTOP: Grid mosaic tradicional */}
+      <div className="hidden lg:grid grid-cols-4 gap-0.5 h-[600px]">
+        {/* Imagem principal (ocupa 2 colunas) */}
         <button
-          key={idx}
-          onClick={() => onImageClick(idx + 1)}
-          className="relative overflow-hidden group bg-gray-200"
+          onClick={() => onImageClick(0)}
+          className="col-span-2 row-span-2 relative overflow-hidden group bg-gray-200"
         >
           <img
-            src={img}
-            alt={`${title} - ${idx + 2}`}
+            src={images[0]}
+            alt={`${title} - Principal`}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
         </button>
-      ))}
 
-      {/* Botão "Ver todas as fotos" - sobreposto no canto inferior direito */}
-      {images.length > 5 && (
-        <button
-          onClick={() => onImageClick(0)}
-          className="absolute bottom-4 right-4 sm:bottom-6 sm:right-6 lg:bottom-8 lg:right-8 pl-5 pr-5 py-3 rounded-full bg-white/90 hover:bg-white text-gray-900 font-medium shadow-xl md:shadow-2xl hover:shadow-2xl transition-all flex items-center gap-2 backdrop-blur-md ring-1 ring-black/10 z-20"
-        >
-          <Maximize2 className="w-4 h-4" />
-          <span className="text-sm md:text-base">Ver todas as {images.length} fotos</span>
-        </button>
-      )}
+        {/* Grid de 4 imagens menores */}
+        {images.slice(1, 5).map((img, idx) => (
+          <button
+            key={idx}
+            onClick={() => onImageClick(idx + 1)}
+            className="relative overflow-hidden group bg-gray-200"
+          >
+            <img
+              src={img}
+              alt={`${title} - ${idx + 2}`}
+              className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </button>
+        ))}
+
+        {/* Botão "Ver todas as fotos" */}
+        {images.length > 5 && (
+          <button
+            onClick={() => onImageClick(0)}
+            className="absolute bottom-8 right-8 px-5 py-3 rounded-full bg-white/90 hover:bg-white text-gray-900 font-medium shadow-2xl hover:shadow-2xl transition-all flex items-center gap-2 backdrop-blur-md ring-1 ring-black/10 z-20"
+          >
+            <Maximize2 className="w-4 h-4" />
+            <span>Ver todas as {images.length} fotos</span>
+          </button>
+        )}
+      </div>
     </motion.div>
   );
 }
@@ -1049,6 +1138,204 @@ function NearbyView({
         showHeader={false}
       />
     </motion.div>
+  );
+}
+
+/**
+ * Lightbox de Fotos com Swipe Touch Nativo
+ * ✅ Otimizado para mobile com gestos naturais e miniaturas adaptativas
+ */
+function LightboxPhotos({
+  images,
+  title,
+  currentImageIndex,
+  setCurrentImageIndex,
+  nextImage,
+  prevImage,
+}: {
+  images: string[];
+  title: string;
+  currentImageIndex: number;
+  setCurrentImageIndex: (index: number) => void;
+  nextImage: () => void;
+  prevImage: () => void;
+}) {
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  const touchStartY = useRef(0);
+  const touchEndY = useRef(0);
+
+  // Swipe gesture handler
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+    touchEndY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = () => {
+    const swipeDistanceX = touchStartX.current - touchEndX.current;
+    const swipeDistanceY = touchStartY.current - touchEndY.current;
+    const minSwipeDistance = 50;
+
+    // Detectar se é swipe horizontal (ignorar swipes verticais)
+    if (Math.abs(swipeDistanceX) > Math.abs(swipeDistanceY)) {
+      if (Math.abs(swipeDistanceX) > minSwipeDistance) {
+        if (swipeDistanceX > 0) {
+          nextImage();
+        } else {
+          prevImage();
+        }
+      }
+    }
+  };
+
+  return (
+    <>
+      {/* Contador - Mobile e Desktop */}
+      <div className="absolute top-3 left-3 sm:top-4 sm:left-4 z-40 px-3 py-1.5 sm:px-4 sm:py-2 rounded-full bg-black/60 backdrop-blur-sm text-white text-xs sm:text-sm font-medium">
+        {currentImageIndex + 1} / {images.length}
+      </div>
+
+      {/* Navegação anterior - Desktop */}
+      {images.length > 1 && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            prevImage();
+          }}
+          className="hidden md:flex absolute left-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white items-center justify-center transition-all"
+          aria-label="Foto anterior"
+        >
+          <ChevronLeft className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Container da Imagem com Swipe */}
+      <div 
+        className="w-full h-full flex items-center justify-center px-2 sm:px-4"
+        onTouchStart={handleTouchStart}
+        onTouchMove={handleTouchMove}
+        onTouchEnd={handleTouchEnd}
+      >
+        <motion.img
+          key={currentImageIndex}
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: -20 }}
+          transition={{ duration: 0.2, ease: 'easeOut' }}
+          src={images[currentImageIndex]}
+          alt={`${title} - Foto ${currentImageIndex + 1}`}
+          className="max-w-full max-h-[85vh] sm:max-h-[80vh] object-contain"
+          draggable={false}
+        />
+      </div>
+
+      {/* Navegação próxima - Desktop */}
+      {images.length > 1 && (
+        <button
+          onClick={(e) => {
+            e.stopPropagation();
+            nextImage();
+          }}
+          className="hidden md:flex absolute right-4 top-1/2 -translate-y-1/2 z-40 w-12 h-12 rounded-full bg-black/40 hover:bg-black/60 backdrop-blur-sm text-white items-center justify-center transition-all"
+          aria-label="Próxima foto"
+        >
+          <ChevronRight className="w-6 h-6" />
+        </button>
+      )}
+
+      {/* Navegação Mobile - Botões Laterais (menores e mais discretos) */}
+      {images.length > 1 && (
+        <>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              prevImage();
+            }}
+            disabled={currentImageIndex === 0}
+            className={`md:hidden absolute left-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm text-white flex items-center justify-center transition-all ${
+              currentImageIndex === 0 ? 'opacity-20' : 'opacity-100 active:scale-95'
+            }`}
+            aria-label="Foto anterior"
+          >
+            <ChevronLeft className="w-5 h-5" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              nextImage();
+            }}
+            disabled={currentImageIndex === images.length - 1}
+            className={`md:hidden absolute right-2 top-1/2 -translate-y-1/2 z-40 w-10 h-10 rounded-full bg-black/30 backdrop-blur-sm text-white flex items-center justify-center transition-all ${
+              currentImageIndex === images.length - 1 ? 'opacity-20' : 'opacity-100 active:scale-95'
+            }`}
+            aria-label="Próxima foto"
+          >
+            <ChevronRight className="w-5 h-5" />
+          </button>
+        </>
+      )}
+
+      {/* Miniaturas - Otimizadas para Mobile */}
+      <div className="absolute bottom-3 sm:bottom-4 left-1/2 -translate-x-1/2 z-40 w-full px-3 sm:px-6">
+        {/* Mobile: Indicadores simples */}
+        <div className="md:hidden flex justify-center gap-1.5">
+          {images.slice(0, Math.min(images.length, 15)).map((_, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentImageIndex(idx);
+              }}
+              className={`transition-all ${
+                idx === currentImageIndex
+                  ? 'w-8 h-2 bg-white rounded-full'
+                  : 'w-2 h-2 bg-white/50 rounded-full'
+              }`}
+              aria-label={`Ir para foto ${idx + 1}`}
+            />
+          ))}
+          {images.length > 15 && (
+            <div className="w-6 h-2 bg-white/30 rounded-full flex items-center justify-center text-white text-[8px] font-bold">
+              +{images.length - 15}
+            </div>
+          )}
+        </div>
+
+        {/* Desktop: Miniaturas com preview */}
+        <div className="hidden md:flex gap-2 overflow-x-auto max-w-[90vw] mx-auto px-4 py-2 bg-black/40 backdrop-blur-sm rounded-full scrollbar-hide">
+          {images.slice(0, 12).map((img, idx) => (
+            <button
+              key={idx}
+              onClick={(e) => {
+                e.stopPropagation();
+                setCurrentImageIndex(idx);
+              }}
+              className={`
+                flex-shrink-0 w-16 h-16 rounded-lg overflow-hidden border-2 transition-all
+                ${idx === currentImageIndex ? 'border-white scale-110 opacity-100' : 'border-transparent opacity-60 hover:opacity-100'}
+              `}
+              aria-label={`Ir para foto ${idx + 1}`}
+            >
+              <img
+                src={img}
+                alt={`Miniatura ${idx + 1}`}
+                className="w-full h-full object-cover"
+              />
+            </button>
+          ))}
+          {images.length > 12 && (
+            <div className="flex-shrink-0 w-16 h-16 rounded-lg bg-white/20 flex items-center justify-center text-white text-xs font-medium">
+              +{images.length - 12}
+            </div>
+          )}
+        </div>
+      </div>
+    </>
   );
 }
 

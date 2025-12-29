@@ -670,11 +670,17 @@ export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isMobileFiltersOpen, setIsMobileFiltersOpen] = useState(false);
   const [isMobileLocationsOpen, setIsMobileLocationsOpen] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
   const { getTotalCount } = useFavoritos();
   
   const favoritosCount = getTotalCount();
+
+  // Check if component is mounted (for portal)
+  useEffect(() => {
+    setIsMounted(true);
+  }, []);
 
   const handleSearchClick = () => {
     router.push('/imoveis');
@@ -889,14 +895,15 @@ export default function Header() {
   );
 
   return (
-    <header
-      id="site-header"
-      className={twMerge(
-        'fixed top-0 left-0 w-full z-header transition-all duration-300',
-        isScrolled ? 'bg-pharos-base-white/95 backdrop-blur-md shadow-card-hover' : 'bg-pharos-base-white shadow-card'
-      )}
-      style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
-    >
+    <>
+      <header
+        id="site-header"
+        className={twMerge(
+          'fixed top-0 left-0 w-full z-header transition-all duration-300',
+          isScrolled ? 'bg-pharos-base-white/95 backdrop-blur-md shadow-card-hover' : 'bg-pharos-base-white shadow-card'
+        )}
+        style={{ paddingTop: 'env(safe-area-inset-top, 0px)' }}
+      >
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 max-w-[1400px]">
         <div className="flex items-center justify-between h-[72px] sm:h-20 lg:h-[88px]">
           {/* Logo */}
@@ -1044,23 +1051,26 @@ export default function Header() {
           </div>
         </div>
       </div>
-
-      {/* Menu Mobile - Overlay */}
-      {isMobileMenuOpen && (
+    </header>
+    {/* Menu Mobile Portal - Renderizado fora do header para evitar problemas de height */}
+    {isMounted && isMobileMenuOpen && createPortal(
+      <>
+        {/* Menu Mobile - Overlay */}
         <div
           className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden transition-opacity duration-300"
           onClick={() => setIsMobileMenuOpen(false)}
-          style={{ zIndex: 99998 }}
+          style={{ zIndex: 9999998 }}
         />
-      )}
 
-      {/* Menu Mobile - Drawer */}
-      <div
-        className={twMerge(
-          'fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-pharos-base-white flex flex-col transition-transform duration-300 ease-out lg:hidden shadow-2xl',
-          isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        )}
-        style={{ zIndex: 99999 }}
+        {/* Menu Mobile - Drawer */}
+        <div
+        className="fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-pharos-base-white flex flex-col lg:hidden shadow-2xl"
+        style={{ 
+          zIndex: 9999999,
+          transform: isMobileMenuOpen ? 'translateX(0)' : 'translateX(100%)',
+          transition: 'transform 300ms cubic-bezier(0.4, 0, 0.2, 1)',
+          willChange: 'transform'
+        }}
       >
         {/* Header do Menu Mobile */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-pharos-slate-300">
@@ -1386,6 +1396,9 @@ export default function Header() {
           </Link>
         </div>
       </div>
-    </header>
+      </>,
+      document.body
+    )}
+  </>
   );
 }

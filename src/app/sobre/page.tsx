@@ -31,7 +31,7 @@ export default function Sobre() {
 
       {/* Hero Minimalista Premium - Mobile-First */}
       <section 
-        className="relative min-h-[500px] sm:min-h-[600px] md:min-h-[650px] lg:h-[80vh] lg:min-h-[700px] overflow-hidden bg-pharos-navy-900/5"
+        className="relative h-[420px] sm:h-[480px] md:h-[520px] lg:h-[560px] xl:h-[600px] overflow-hidden bg-pharos-navy-900"
         role="banner"
         aria-label="Seção sobre a Pharos"
       >
@@ -40,38 +40,47 @@ export default function Sobre() {
           initial={{ opacity: 0, scale: 1.04 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 1.4, ease: "easeOut" }}
-          className="absolute inset-0"
+          className="absolute top-0 left-0 right-0 bottom-0 w-full h-full"
         >
           <Image 
             src="/images/banners/balneario-camboriu.webp"
             alt="Pharos Negócios Imobiliários"
             fill
-            className="object-cover scale-[1.01]"
             priority
             quality={95}
-            style={{ filter: "saturate(0.9) brightness(0.78)" }}
+            sizes="100vw"
+            className="!object-cover !object-center"
+            style={{ 
+              filter: "saturate(0.9) brightness(0.78)",
+              width: '100%',
+              height: '100%',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              objectFit: 'cover'
+            }}
           />
-          {/* Overlay sofisticado para contraste em tons de azul */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0B1E47]/78 via-[#123B7A]/46 to-[#E8F1FF]/25" />
-          {/* Vinheta sutil para foco no centro */}
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_55%,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0)_52%)]" />
         </motion.div>
+        {/* Overlay sofisticado para contraste em tons de azul */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#0B1E47]/78 via-[#123B7A]/46 to-[#E8F1FF]/25 pointer-events-none z-10" />
+        {/* Vinheta sutil para foco no centro */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_55%,rgba(255,255,255,0.2)_0%,rgba(255,255,255,0)_52%)] pointer-events-none z-10" />
 
         {/* Content centralizado - Mobile-First */}
-        <div className="relative h-full flex items-center justify-center">
-          <div className="container max-w-5xl mx-auto px-4 sm:px-6 text-center">
+        <div className="relative h-full flex items-center justify-center px-4 z-20">
+          <div className="container max-w-5xl mx-auto text-center">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 1, delay: 0.3, ease: [0.22, 1, 0.36, 1] }}
-              className="space-y-6 sm:space-y-8"
+              className="space-y-4 sm:space-y-6"
             >
               {/* Badge minimalista */}
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.8, delay: 0.5 }}
-                className="inline-flex items-center gap-2 px-3 sm:px-4 py-2 rounded-full border border-white/18 bg-white/14 backdrop-blur-lg shadow-[0_10px_40px_rgba(0,0,0,0.12)]"
+                className="inline-flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full border border-white/18 bg-white/14 backdrop-blur-lg shadow-[0_10px_40px_rgba(0,0,0,0.12)]"
               >
                 <div className="w-1.5 h-1.5 rounded-full bg-pharos-gold animate-pulse" aria-hidden="true" />
                 <span className="text-xs sm:text-sm font-medium text-white tracking-wide">
@@ -80,15 +89,15 @@ export default function Sobre() {
               </motion.div>
 
               {/* Título refinado - Mobile-First */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-light text-white leading-[1.2] sm:leading-[1.15] tracking-tight drop-shadow-[0_12px_30px_rgba(0,0,0,0.25)] px-4">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-light text-white leading-[1.2] tracking-tight drop-shadow-[0_12px_30px_rgba(0,0,0,0.25)] px-2">
                 Guiando você para o
-                <span className="block font-semibold mt-2 text-white">
+                <span className="block font-semibold mt-1 sm:mt-2 text-white">
                   imóvel ideal
                 </span>
               </h1>
 
               {/* Subtítulo elegante - Mobile-First */}
-              <p className="text-base sm:text-lg md:text-xl text-white/80 max-w-2xl mx-auto font-light leading-relaxed px-4">
+              <p className="text-sm sm:text-base md:text-lg text-white/80 max-w-2xl mx-auto font-light leading-relaxed px-2">
                 Excelência em negócios imobiliários de alto padrão em Balneário Camboriú
               </p>
             </motion.div>
@@ -100,18 +109,18 @@ export default function Sobre() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 1, delay: 1.2 }}
-          className="absolute bottom-8 sm:bottom-12 left-1/2 -translate-x-1/2 hidden sm:block"
+          className="absolute bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 hidden md:block"
           aria-hidden="true"
         >
           <motion.div
             animate={{ y: [0, 8, 0] }}
             transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-            className="flex flex-col items-center gap-3"
+            className="flex flex-col items-center gap-2"
           >
             <span className="text-xs font-medium text-white/65 uppercase tracking-widest">
               Descubra mais
             </span>
-            <div className="w-px h-12 bg-gradient-to-b from-white/60 to-transparent" />
+            <div className="w-px h-10 bg-gradient-to-b from-white/60 to-transparent" />
           </motion.div>
         </motion.div>
       </section>

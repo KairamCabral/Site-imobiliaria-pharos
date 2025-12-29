@@ -64,32 +64,31 @@ export default function ContatoPage() {
           </div>
         </div>
 
-        {/* Hero Section - Mobile-First Optimizado */}
+        {/* Hero Section - Minimalista e Responsivo */}
         <section 
-          className="relative min-h-[280px] sm:min-h-[320px] md:h-[40vh] md:min-h-[400px] flex items-center justify-center"
-          style={{
-            background: 'linear-gradient(135deg, #054ADA 0%, #192233 60%)'
-          }}
+          className="relative bg-gradient-to-br from-primary via-primary-600 to-blue-900 overflow-hidden"
           role="banner"
           aria-label="Seção de contato"
         >
-          <div className="container max-w-4xl mx-auto px-4 sm:px-6 text-center">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 leading-tight">
+          <div className="container max-w-7xl mx-auto px-4 sm:px-6 py-12 sm:py-16 md:py-20">
+            <div className="text-center max-w-3xl mx-auto">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-4 leading-tight">
               Fale com a Pharos
             </h1>
-            <p className="text-base sm:text-lg text-white/90 max-w-2xl mx-auto leading-relaxed px-4">
+              <p className="text-base sm:text-lg md:text-xl text-white/90 mb-8 sm:mb-10 leading-relaxed">
               Preencha o formulário e nossa equipe retorna em até 1 hora útil
             </p>
+              
+              {/* Quick Contact Buttons Integrados */}
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 max-w-xl mx-auto">
+                <ContactQuickCards />
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Quick Contact Buttons */}
-        <section className="container max-w-7xl mx-auto px-4 sm:px-6" aria-label="Botões de contato rápido">
-          <ContactQuickCards />
-        </section>
-
-        {/* Main Content Grid - Mobile-First */}
-        <section className="container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-10 md:py-12">
+        {/* Main Content Grid - Mobile-First com Espaçamento Adequado */}
+        <section className="container max-w-7xl mx-auto px-4 sm:px-6 py-8 sm:py-12 md:py-16">
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-6 sm:gap-8">
             {/* Formulário - 3/5 (60%) em desktop */}
             <div className="lg:col-span-3 order-2 lg:order-1">

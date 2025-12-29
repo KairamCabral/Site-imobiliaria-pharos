@@ -24,7 +24,7 @@ async function optimizeImage(inputPath, outputDir) {
     const webpPath = path.join(outputDir, `${filename}${suffix}.webp`);
     await sharp(inputPath)
       .resize(width, null, { fit: 'inside', withoutEnlargement: true })
-      .webp({ quality: 80, effort: 6 })
+      .webp({ quality: 70, effort: 6 })
       .toFile(webpPath);
     
     const webpStats = fs.statSync(webpPath);
@@ -34,7 +34,7 @@ async function optimizeImage(inputPath, outputDir) {
     const avifPath = path.join(outputDir, `${filename}${suffix}.avif`);
     await sharp(inputPath)
       .resize(width, null, { fit: 'inside', withoutEnlargement: true })
-      .avif({ quality: 70, effort: 6 })
+      .avif({ quality: 60, effort: 6 })
       .toFile(avifPath);
     
     const avifStats = fs.statSync(avifPath);

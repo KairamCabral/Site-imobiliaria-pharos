@@ -151,7 +151,7 @@ export const ContactSidebar: React.FC = () => {
   );
 
   return (
-    <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 overflow-hidden shadow-sm lg:sticky lg:top-24">
+    <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-200 overflow-hidden shadow-sm hover:shadow-md transition-shadow lg:sticky lg:top-24">
       {/* Tabs Navigation - Mobile Optimizado */}
       <div 
         className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide"
@@ -220,13 +220,13 @@ export const ContactSidebar: React.FC = () => {
             aria-labelledby="tab-contato"
             className="space-y-4"
           >
-            {/* Tempo de Resposta */}
-            <div className="bg-pharos-blue-500 text-white rounded-lg p-4">
-              <div className="flex items-center gap-2 mb-1">
+            {/* Tempo de Resposta - Card destaque */}
+            <div className="bg-gradient-to-br from-primary to-primary-600 text-white rounded-xl p-5 shadow-lg">
+              <div className="flex items-center gap-2 mb-2">
                 <ClockIcon className="w-5 h-5 flex-shrink-0" />
-                <span className="text-sm font-medium">Tempo de resposta</span>
+                <span className="text-sm font-semibold">Tempo de resposta</span>
               </div>
-              <p className="text-base sm:text-lg font-bold">{getResponseTime()}</p>
+              <p className="text-lg sm:text-xl font-bold">{getResponseTime()}</p>
             </div>
 
             {/* Status - só mostra quando aberto */}
