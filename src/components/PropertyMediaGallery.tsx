@@ -748,7 +748,6 @@ function VideosGrid({
                       className="w-full h-full"
                       controlsList="nodownload"
                       preload="metadata"
-                      loading="lazy"
                     >
                       Seu navegador não suporta vídeos HTML5.
                     </video>
