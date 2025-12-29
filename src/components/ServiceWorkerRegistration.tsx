@@ -18,7 +18,7 @@ export function ServiceWorkerRegistration() {
         navigator.serviceWorker
           .register('/sw.js')
           .then((registration) => {
-            console.log('✅ Service Worker registered:', registration.scope);
+            // Service Worker registrado com sucesso
             
             // Verificar atualizações a cada 1 hora
             setInterval(() => {
@@ -26,7 +26,7 @@ export function ServiceWorkerRegistration() {
             }, 60 * 60 * 1000);
           })
           .catch((error) => {
-            console.error('❌ Service Worker registration failed:', error);
+            // Falha silenciosa - não é crítico
           });
       });
       
@@ -35,7 +35,6 @@ export function ServiceWorkerRegistration() {
       navigator.serviceWorker.addEventListener('controllerchange', () => {
         if (refreshing) return;
         refreshing = true;
-        console.log('🔄 Service Worker updated, reloading page...');
         window.location.reload();
       });
     }

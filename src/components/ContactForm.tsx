@@ -285,14 +285,18 @@ export const ContactForm: React.FC = () => {
 
   if (submitSuccess) {
     return (
-      <div className="bg-green-50 border-2 border-green-500 rounded-xl p-8 text-center">
-        <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
-          <CheckCircleIcon className="w-10 h-10 text-white" />
+      <div 
+        className="bg-green-50 border-2 border-green-500 rounded-xl p-6 sm:p-8 text-center"
+        role="status"
+        aria-live="polite"
+      >
+        <div className="w-14 h-14 sm:w-16 sm:h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
+          <CheckCircleIcon className="w-8 h-8 sm:w-10 sm:h-10 text-white" />
         </div>
-        <h3 className="text-2xl font-bold text-pharos-navy-900 mb-2">
+        <h3 className="text-xl sm:text-2xl font-bold text-pharos-navy-900 mb-2">
           Mensagem enviada!
         </h3>
-        <p className="text-pharos-slate-700">
+        <p className="text-sm sm:text-base text-pharos-slate-700">
           Retornaremos em breve no seu canal preferido.
         </p>
       </div>
@@ -300,24 +304,31 @@ export const ContactForm: React.FC = () => {
   }
 
   return (
-    <div ref={formRef} className="bg-white rounded-xl border border-pharos-slate-300 p-6">
-      {/* Progress Indicator */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-            currentStep >= 1 ? 'bg-pharos-blue-500 text-white' : 'bg-pharos-slate-300 text-pharos-slate-500'
-          }`}>
-            {currentStep > 1 ? <CheckCircleIcon className="w-5 h-5" /> : '1'}
+    <div ref={formRef} className="bg-white rounded-xl border border-pharos-slate-300 p-4 sm:p-6 shadow-sm">
+      {/* Progress Indicator - Mobile Optimizado */}
+      <div className="flex items-center justify-between mb-5 sm:mb-6" role="progressbar" aria-valuenow={currentStep} aria-valuemin={1} aria-valuemax={2}>
+        <div className="flex items-center gap-2 sm:gap-3">
+          <div 
+            className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full text-sm sm:text-base font-semibold transition-all ${
+              currentStep >= 1 ? 'bg-pharos-blue-500 text-white' : 'bg-pharos-slate-300 text-pharos-slate-500'
+            }`}
+            aria-label={`Etapa 1${currentStep > 1 ? ' concluída' : ' atual'}`}
+          >
+            {currentStep > 1 ? <CheckCircleIcon className="w-5 h-5 sm:w-6 sm:h-6" /> : '1'}
           </div>
-          <div className={`w-16 h-0.5 ${currentStep >= 2 ? 'bg-pharos-blue-500' : 'bg-pharos-slate-300'}`} />
-          <div className={`flex items-center justify-center w-8 h-8 rounded-full ${
-            currentStep >= 2 ? 'bg-pharos-blue-500 text-white' : 'bg-pharos-slate-300 text-pharos-slate-500'
-          }`}>
+          <div className={`w-12 sm:w-16 h-1 rounded-full transition-all ${currentStep >= 2 ? 'bg-pharos-blue-500' : 'bg-pharos-slate-300'}`} />
+          <div 
+            className={`flex items-center justify-center w-9 h-9 sm:w-10 sm:h-10 rounded-full text-sm sm:text-base font-semibold transition-all ${
+              currentStep >= 2 ? 'bg-pharos-blue-500 text-white' : 'bg-pharos-slate-300 text-pharos-slate-500'
+            }`}
+            aria-label={`Etapa 2${currentStep === 2 ? ' atual' : ''}`}
+          >
             2
           </div>
         </div>
-        <span className="text-sm text-pharos-slate-500">
-          Etapa {currentStep} de 2
+        <span className="text-xs sm:text-sm text-pharos-slate-500 font-medium">
+          <span className="hidden sm:inline">Etapa {currentStep} de 2</span>
+          <span className="sm:hidden">{currentStep}/2</span>
         </span>
       </div>
 
@@ -325,13 +336,13 @@ export const ContactForm: React.FC = () => {
         {/* Step 1: Base */}
         {currentStep === 1 && (
           <div className="space-y-6">
-            {/* Seletor de Intenção */}
+            {/* Seletor de Intenção - Mobile Optimizado */}
             <div>
-              <h3 className="text-lg font-semibold text-pharos-navy-900 mb-3">
+              <h3 className="text-base sm:text-lg font-semibold text-pharos-navy-900 mb-3 sm:mb-4">
                 Como podemos ajudar?
               </h3>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-2 gap-2.5 sm:gap-3">
                 {intents.map((intent) => {
                   const Icon = intent.icon;
                   return (
@@ -339,14 +350,16 @@ export const ContactForm: React.FC = () => {
                       key={intent.id}
                       type="button"
                       onClick={() => handleIntentSelect(intent.id as IntentType)}
-                      className={`flex flex-col items-center justify-center p-4 rounded-lg border-2 transition-all duration-200 min-h-[90px] ${
+                      className={`flex flex-col items-center justify-center p-3 sm:p-4 rounded-lg border-2 transition-all duration-200 min-h-[100px] sm:min-h-[110px] touch-manipulation ${
                         formData.intent === intent.id
                           ? 'border-pharos-blue-500 bg-pharos-blue-50 shadow-md'
-                          : 'border-pharos-slate-300 bg-white hover:border-pharos-blue-500'
+                          : 'border-pharos-slate-300 bg-white hover:border-pharos-blue-500 active:scale-95'
                       }`}
+                      aria-pressed={formData.intent === intent.id}
+                      aria-label={`Selecionar opção: ${intent.label}`}
                     >
-                      <Icon className="w-6 h-6 mb-2 text-pharos-blue-500" />
-                      <span className="text-sm font-medium text-pharos-navy-900 text-center">
+                      <Icon className="w-7 h-7 sm:w-8 sm:h-8 mb-2 text-pharos-blue-500" />
+                      <span className="text-xs sm:text-sm font-medium text-pharos-navy-900 text-center leading-snug">
                         {intent.label}
                       </span>
                     </button>
@@ -355,14 +368,16 @@ export const ContactForm: React.FC = () => {
               </div>
 
               {errors.intent && (
-                <p className="mt-2 text-sm text-red-500">{errors.intent}</p>
+                <p className="mt-2 text-sm text-red-500" role="alert">
+                  {errors.intent}
+                </p>
               )}
             </div>
 
             {/* Campos Base */}
             {formData.intent && (
-              <div className="space-y-4 pt-4 border-t border-pharos-slate-300">
-                <h3 className="text-lg font-semibold text-pharos-navy-900 mb-2">
+              <div className="space-y-4 pt-4 sm:pt-5 border-t border-pharos-slate-300">
+                <h3 className="text-base sm:text-lg font-semibold text-pharos-navy-900 mb-2">
                   Seus dados de contato
                 </h3>
 
@@ -429,6 +444,7 @@ export const ContactForm: React.FC = () => {
                   onClick={handleContinue}
                   icon={<ArrowRightIcon className="w-5 h-5" />}
                   iconPosition="right"
+                  className="min-h-[48px] sm:min-h-[52px] text-base sm:text-lg font-semibold touch-manipulation"
                 >
                   Continuar
                 </Button>
@@ -437,20 +453,21 @@ export const ContactForm: React.FC = () => {
           </div>
         )}
 
-        {/* Step 2: Detalhes */}
+        {/* Step 2: Detalhes - Mobile Optimizado */}
         {currentStep === 2 && (
-          <div className="space-y-6">
+          <div className="space-y-5 sm:space-y-6">
             <div className="flex items-center justify-between">
-              <h3 className="text-lg font-semibold text-pharos-navy-900">
+              <h3 className="text-base sm:text-lg font-semibold text-pharos-navy-900">
                 Detalhes adicionais
               </h3>
               <button
                 type="button"
                 onClick={handleBack}
-                className="flex items-center gap-1 text-sm text-pharos-blue-500 hover:text-pharos-blue-600"
+                className="flex items-center gap-1 text-sm text-pharos-blue-500 hover:text-pharos-blue-600 touch-manipulation min-h-[44px] min-w-[44px] justify-end"
+                aria-label="Voltar para etapa anterior"
               >
                 <ArrowLeftIcon className="w-4 h-4" />
-                Voltar
+                <span className="hidden sm:inline">Voltar</span>
               </button>
             </div>
 
@@ -571,20 +588,20 @@ export const ContactForm: React.FC = () => {
                 onChange={(e) => handleChange('aceitoOportunidades', e.target.checked)}
               />
 
-              <p className="text-xs text-pharos-slate-500 leading-relaxed">
+              <p className="text-xs sm:text-sm text-pharos-slate-500 leading-relaxed">
                 Seus dados estão protegidos conforme a LGPD.
               </p>
             </div>
 
-            {/* Botões de ação */}
-            <div className="flex gap-3">
+            {/* Botões de ação - Mobile Optimizado */}
+            <div className="flex flex-col sm:flex-row gap-3">
               <Button
                 type="button"
                 variant="secondary"
                 size="lg"
                 onClick={handleBack}
                 icon={<ArrowLeftIcon className="w-5 h-5" />}
-                className="flex-1"
+                className="flex-1 order-2 sm:order-1 min-h-[48px] sm:min-h-[52px] touch-manipulation"
               >
                 Voltar
               </Button>
@@ -596,7 +613,7 @@ export const ContactForm: React.FC = () => {
                 fullWidth
                 loading={isSubmitting}
                 disabled={isSubmitting || !formData.aceitoContato}
-                className="flex-[2]"
+                className="flex-[2] order-1 sm:order-2 min-h-[48px] sm:min-h-[52px] text-base sm:text-lg font-semibold touch-manipulation"
               >
                 {isSubmitting ? 'Enviando...' : 'Enviar mensagem'}
               </Button>

@@ -151,12 +151,19 @@ export const ContactSidebar: React.FC = () => {
   );
 
   return (
-    <div className="bg-white rounded-2xl border border-gray-100 overflow-hidden shadow-sm sticky top-24">
-      {/* Tabs Navigation */}
-      <div className="flex border-b border-gray-200">
+    <div className="bg-white rounded-xl sm:rounded-2xl border border-gray-100 overflow-hidden shadow-sm lg:sticky lg:top-24">
+      {/* Tabs Navigation - Mobile Optimizado */}
+      <div 
+        className="flex border-b border-gray-200 overflow-x-auto scrollbar-hide"
+        role="tablist"
+        aria-label="Opções de informações de contato"
+      >
         <button
           onClick={() => setActiveTab('contato')}
-          className={`flex-1 px-4 py-3 text-sm font-medium transition-colors relative ${
+          role="tab"
+          aria-selected={activeTab === 'contato'}
+          aria-controls="tab-contato"
+          className={`flex-1 min-w-[90px] px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium transition-colors relative touch-manipulation ${
             activeTab === 'contato'
               ? 'text-pharos-blue-500'
               : 'text-pharos-slate-500 hover:text-pharos-slate-700'
@@ -170,7 +177,10 @@ export const ContactSidebar: React.FC = () => {
         
         <button
           onClick={() => setActiveTab('equipe')}
-          className={`flex-1 px-4 py-3 text-sm font-medium transition-colors relative ${
+          role="tab"
+          aria-selected={activeTab === 'equipe'}
+          aria-controls="tab-equipe"
+          className={`flex-1 min-w-[90px] px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium transition-colors relative touch-manipulation ${
             activeTab === 'equipe'
               ? 'text-pharos-blue-500'
               : 'text-pharos-slate-500 hover:text-pharos-slate-700'
@@ -184,7 +194,10 @@ export const ContactSidebar: React.FC = () => {
         
         <button
           onClick={() => setActiveTab('faq')}
-          className={`flex-1 px-4 py-3 text-sm font-medium transition-colors relative ${
+          role="tab"
+          aria-selected={activeTab === 'faq'}
+          aria-controls="tab-faq"
+          className={`flex-1 min-w-[90px] px-3 sm:px-4 py-3 sm:py-3.5 text-xs sm:text-sm font-medium transition-colors relative touch-manipulation ${
             activeTab === 'faq'
               ? 'text-pharos-blue-500'
               : 'text-pharos-slate-500 hover:text-pharos-slate-700'
@@ -198,23 +211,28 @@ export const ContactSidebar: React.FC = () => {
       </div>
 
       {/* Tab Content */}
-      <div className="p-6">
+      <div className="p-4 sm:p-5 md:p-6">
         {/* Contato Tab */}
         {activeTab === 'contato' && (
-          <div className="space-y-4">
+          <div 
+            id="tab-contato" 
+            role="tabpanel" 
+            aria-labelledby="tab-contato"
+            className="space-y-4"
+          >
             {/* Tempo de Resposta */}
             <div className="bg-pharos-blue-500 text-white rounded-lg p-4">
               <div className="flex items-center gap-2 mb-1">
-                <ClockIcon className="w-5 h-5" />
+                <ClockIcon className="w-5 h-5 flex-shrink-0" />
                 <span className="text-sm font-medium">Tempo de resposta</span>
               </div>
-              <p className="text-lg font-bold">{getResponseTime()}</p>
+              <p className="text-base sm:text-lg font-bold">{getResponseTime()}</p>
             </div>
 
             {/* Status - só mostra quando aberto */}
             {status && (
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-sm font-medium bg-green-100 text-green-700">
-                <span className="w-2 h-2 rounded-full bg-green-500"></span>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full text-xs sm:text-sm font-medium bg-green-100 text-green-700">
+                <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
                 {status}
               </div>
             )}
@@ -250,7 +268,8 @@ export const ContactSidebar: React.FC = () => {
               href="https://www.google.com/maps/search/?api=1&query=Rua+2300,+575,+Centro,+Balneário+Camboriú,+SC"
               target="_blank"
               rel="noopener noreferrer"
-              className="block w-full text-center bg-pharos-blue-500 hover:bg-pharos-blue-600 text-white font-semibold py-3 rounded-lg transition-colors text-sm shadow-sm"
+              className="block w-full text-center bg-pharos-blue-500 hover:bg-pharos-blue-600 active:bg-pharos-blue-700 text-white font-semibold py-3 sm:py-3.5 rounded-lg transition-all text-sm sm:text-base shadow-sm hover:shadow-md touch-manipulation min-h-[48px]"
+              aria-label="Abrir localização no Google Maps"
             >
               Como chegar
             </a>
@@ -265,8 +284,13 @@ export const ContactSidebar: React.FC = () => {
 
         {/* Equipe Tab */}
         {activeTab === 'equipe' && (
-          <div className="space-y-4">
-            <p className="text-sm text-pharos-slate-500">
+          <div 
+            id="tab-equipe" 
+            role="tabpanel" 
+            aria-labelledby="tab-equipe"
+            className="space-y-4"
+          >
+            <p className="text-xs sm:text-sm text-pharos-slate-500">
               Fale diretamente com nossos especialistas
             </p>
 
@@ -277,59 +301,61 @@ export const ContactSidebar: React.FC = () => {
                 placeholder="Buscar corretor..."
                 value={teamSearch}
                 onChange={(e) => setTeamSearch(e.target.value)}
-                className="w-full px-4 py-2 pl-10 text-sm border border-pharos-slate-300 rounded-lg focus:ring-2 focus:ring-pharos-blue-500 focus:border-pharos-blue-500 outline-none transition-all"
+                className="w-full px-4 py-2.5 sm:py-2 pl-10 text-sm border border-pharos-slate-300 rounded-lg focus:ring-2 focus:ring-pharos-blue-500 focus:border-pharos-blue-500 outline-none transition-all min-h-[44px] sm:min-h-0"
+                aria-label="Buscar corretor por nome ou cargo"
               />
               <svg
-                className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-pharos-slate-400"
+                className="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-pharos-slate-400 pointer-events-none"
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
               </svg>
             </div>
 
             {/* Lista de Equipe */}
-            <div className="space-y-2 max-h-[400px] overflow-y-auto custom-scrollbar">
+            <div className="space-y-2 max-h-[350px] sm:max-h-[400px] overflow-y-auto custom-scrollbar">
               {filteredTeam.length > 0 ? (
                 filteredTeam.map((member) => (
                   <div
                     key={member.id}
-                    className="flex items-center gap-3 p-3 rounded-lg border border-pharos-slate-300 hover:border-pharos-blue-500 transition-colors group"
+                    className="flex items-center gap-3 p-3 sm:p-3 rounded-lg border border-pharos-slate-300 hover:border-pharos-blue-500 transition-colors group"
                   >
                     {/* Foto do corretor */}
-                    <div className="w-12 h-12 rounded-full overflow-hidden bg-pharos-slate-200 flex-shrink-0 relative">
+                    <div className="w-12 h-12 sm:w-14 sm:h-14 rounded-full overflow-hidden bg-pharos-slate-200 flex-shrink-0 relative">
                       {member.photo ? (
                         <Image
                           src={member.photo}
                           alt={member.name}
                           fill
-                          sizes="48px"
+                          sizes="(max-width: 640px) 48px, 56px"
                           className="object-cover"
                         />
                       ) : (
                         <div className="w-full h-full flex items-center justify-center bg-pharos-slate-300">
-                          <UserIcon className="w-6 h-6 text-pharos-slate-500" />
+                          <UserIcon className="w-6 h-6 sm:w-7 sm:h-7 text-pharos-slate-500" />
                         </div>
                       )}
                     </div>
 
                     <div className="flex-1 min-w-0">
-                      <h3 className="font-medium text-pharos-navy-900 text-sm truncate">
+                      <h3 className="font-medium text-pharos-navy-900 text-sm sm:text-base truncate">
                         {member.name}
                       </h3>
-                      <p className="text-xs text-pharos-slate-500 truncate">
+                      <p className="text-xs sm:text-sm text-pharos-slate-500 truncate">
                         {member.role}
                       </p>
                     </div>
 
                     <button
                       onClick={() => handleWhatsAppClick(member.whatsapp, member.name)}
-                      className="w-10 h-10 bg-green-500 rounded-full flex items-center justify-center text-white hover:bg-green-600 transition-colors flex-shrink-0 shadow-sm hover:shadow-md transition-all"
+                      className="w-11 h-11 sm:w-12 sm:h-12 bg-green-500 rounded-full flex items-center justify-center text-white hover:bg-green-600 active:bg-green-700 transition-all flex-shrink-0 shadow-sm hover:shadow-md touch-manipulation"
                       aria-label={`Falar com ${member.name} no WhatsApp`}
                       title={`WhatsApp ${member.name}`}
                     >
-                      <PhoneIcon className="w-5 h-5" />
+                      <PhoneIcon className="w-5 h-5 sm:w-6 sm:h-6" />
                     </button>
                   </div>
                 ))
@@ -351,8 +377,13 @@ export const ContactSidebar: React.FC = () => {
 
         {/* FAQ Tab */}
         {activeTab === 'faq' && (
-          <div className="space-y-4">
-            <p className="text-sm text-pharos-slate-500 mb-4">
+          <div 
+            id="tab-faq" 
+            role="tabpanel" 
+            aria-labelledby="tab-faq"
+            className="space-y-4"
+          >
+            <p className="text-xs sm:text-sm text-pharos-slate-500 mb-4">
               Respostas rápidas para dúvidas comuns
             </p>
             
@@ -366,7 +397,8 @@ export const ContactSidebar: React.FC = () => {
                 href="https://wa.me/5547991878070?text=Olá! Tenho uma dúvida."
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center gap-2 text-pharos-blue-500 hover:text-pharos-blue-600 font-medium text-sm transition-colors"
+                className="inline-flex items-center gap-2 text-pharos-blue-500 hover:text-pharos-blue-600 font-medium text-sm transition-colors touch-manipulation min-h-[44px] justify-center"
+                aria-label="Abrir WhatsApp para tirar dúvidas"
               >
                 <PhoneIcon className="w-4 h-4" />
                 Falar no WhatsApp

@@ -69,14 +69,22 @@ const nextConfig: NextConfig = {
   compress: true,
   poweredByHeader: false,
   reactStrictMode: true,
+  // ✅ Remover console.log em produção
+  compiler: {
+    removeConsole: process.env.NODE_ENV === 'production' ? {
+      exclude: ['error', 'warn'],
+    } : false,
+  },
+  // ✅ Otimizar importações de pacotes grandes
+  experimental: {
+    optimizePackageImports: ['lucide-react', 'swiper'],
+  },
   images: {
-    loader: 'custom',
-    loaderFile: './src/lib/image-loader.ts',
+    // ❌ REMOVIDO: loader customizado (causava problemas na Vercel)
     remotePatterns: imageRemotePatterns,
     domains: imageDomains,
     formats: ['image/avif', 'image/webp'],
     minimumCacheTTL: 60 * 60 * 24 * 30, // 30 dias para melhor cache
-    // unoptimized: true, ❌ REMOVIDO - agora Next.js otimiza automaticamente
     deviceSizes: [640, 750, 828, 1080, 1200, 1920],
     imageSizes: [16, 32, 48, 64, 96, 128, 256, 384],
     qualities: [50, 60, 70, 75, 80, 85, 90, 95, 100],

@@ -186,9 +186,12 @@ export default function HomeClient({
             alt="Imóveis de alto padrão em Balneário Camboriú" 
             fill
             priority
+            fetchPriority="high"
             sizes="100vw"
             className="object-cover"
             quality={85}
+            placeholder="blur"
+            blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTkyMCIgaGVpZ2h0PSI2ODAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PHJlY3Qgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0iIzFhMjAzMCIvPjwvc3ZnPg=="
           />
         </picture>
         

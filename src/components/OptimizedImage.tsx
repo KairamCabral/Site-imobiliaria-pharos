@@ -39,11 +39,28 @@ export function OptimizedImage(props: OptimizedImageProps) {
   
   const placeholder = shouldUseBlur ? 'blur' as const : providedPlaceholder;
   
-  // Se src é string e contém hosts DWV, usa img nativo
+  // Se src é string e contém hosts DWV/Vista, otimiza e usa img nativo
   if (typeof src === 'string' && (
     src.includes('dwvimagesv1.b-cdn.net') ||
-    src.includes('b-cdn.net')
+    src.includes('b-cdn.net') ||
+    src.includes('cdn.vistahost.com.br') ||
+    src.includes('vistahost.com.br')
   )) {
+    // ✅ Adicionar parâmetros de otimização se o CDN suportar
+    let optimizedSrc = src;
+    
+    // Para B-CDN (DWV), adiciona parâmetros de resize e qualidade
+    if (src.includes('b-cdn.net') && !src.includes('?')) {
+      const width = fill ? 1200 : 800;
+      optimizedSrc = `${src}?width=${width}&quality=75&format=webp`;
+    }
+    
+    // Para Vista CDN, adiciona parâmetros se disponível
+    if (src.includes('vistahost.com.br') && !src.includes('?')) {
+      const width = fill ? 1200 : 800;
+      optimizedSrc = `${src}?w=${width}&q=75&fm=webp`;
+    }
+    
     const imgStyle: React.CSSProperties = {
       ...style,
       objectFit: 'cover',
@@ -57,7 +74,7 @@ export function OptimizedImage(props: OptimizedImageProps) {
 
     return (
       <img
-        src={src}
+        src={optimizedSrc}
         alt={alt}
         className={className}
         style={imgStyle}

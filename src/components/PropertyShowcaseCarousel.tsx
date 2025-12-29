@@ -82,37 +82,37 @@ export function PropertyShowcaseCarousel({
   return (
     <section
       id={sectionId}
-      className={`${backgroundClass} py-20 md:py-24 lg:py-28 transition-colors duration-500`}
+      className={`${backgroundClass} py-12 sm:py-16 md:py-20 lg:py-24 xl:py-28 transition-colors duration-500`}
       aria-label={title}
       data-cache-layer={cacheLayer}
     >
-      <div className="container mx-auto px-6 sm:px-10 md:px-16 lg:px-24 max-w-screen-2xl">
-        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-10 mb-14 md:mb-16">
+      <div className="container mx-auto px-4 sm:px-6 md:px-10 lg:px-16 xl:px-24 max-w-screen-2xl">
+        <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 sm:gap-8 md:gap-10 mb-10 sm:mb-12 md:mb-14 lg:mb-16">
           <div className="max-w-3xl">
             {badge && (
-              <span className="inline-block text-[10px] font-semibold uppercase tracking-[0.2em] text-pharos-blue-500 mb-5">
+              <span className="inline-block text-[10px] font-semibold uppercase tracking-[0.2em] text-pharos-blue-500 mb-3 sm:mb-5">
                 {badge}
               </span>
             )}
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-pharos-navy-900 leading-tight">
+            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-pharos-navy-900 leading-tight">
               {title}
             </h2>
             {subtitle && (
-              <div className="flex items-center gap-2 text-pharos-slate-600 mt-4 text-sm md:text-base">
-                <svg className="w-4 h-4 text-pharos-blue-500" fill="currentColor" viewBox="0 0 24 24">
+              <div className="flex items-center gap-2 text-pharos-slate-600 mt-3 sm:mt-4 text-xs sm:text-sm md:text-base">
+                <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-pharos-blue-500 flex-shrink-0" fill="currentColor" viewBox="0 0 24 24">
                   <path d="M12 2C8.134 2 5 5.134 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.866-3.134-7-7-7zm0 9.5c-1.379 0-2.5-1.121-2.5-2.5S10.621 6.5 12 6.5s2.5 1.121 2.5 2.5S13.379 11.5 12 11.5z" />
                 </svg>
                 <span className="font-medium">{subtitle}</span>
               </div>
             )}
             {description && (
-              <p className="text-base md:text-lg text-pharos-slate-600 leading-relaxed mt-4 max-w-2xl">
+              <p className="text-sm sm:text-base md:text-lg text-pharos-slate-600 leading-relaxed mt-3 sm:mt-4 max-w-2xl">
                 {description}
               </p>
             )}
           </div>
 
-          <div className="flex flex-col md:items-end md:justify-end gap-3 text-right">
+          <div className="flex flex-col md:items-end md:justify-end gap-3 text-right w-full md:w-auto">
             <div className="min-h-[20px]">
               {refreshing ? (
                 <span className="inline-flex items-center gap-2 text-xs font-semibold text-pharos-blue-500 animate-pulse" aria-live="polite">
@@ -126,38 +126,39 @@ export function PropertyShowcaseCarousel({
               ) : null}
             </div>
 
-            <div className="flex items-center justify-between md:justify-end gap-4 md:gap-6">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-between md:justify-end gap-3 sm:gap-4 md:gap-6 w-full md:w-auto">
               {ctaHref && ctaLabel && (
                 <Link
                   href={ctaHref}
-                  className="group inline-flex items-center gap-3 text-primary font-semibold px-6 py-3 rounded-xl border-2 border-primary/15 hover:border-primary hover:bg-primary/5 hover:text-primary-600 transition-all"
+                  className="group inline-flex items-center justify-center gap-2 sm:gap-3 text-primary font-semibold px-5 sm:px-6 py-3 rounded-xl border-2 border-primary/15 hover:border-primary hover:bg-primary/5 hover:text-primary-600 transition-all text-sm sm:text-base min-h-[48px] sm:min-h-0 touch-manipulation"
+                  aria-label={ctaLabel}
                 >
                   {ctaLabel}
-                  <svg className="w-5 h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
+                  <svg className="w-4 h-4 sm:w-5 sm:h-5 transition-transform group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.5}>
                     <path strokeLinecap="round" strokeLinejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
                   </svg>
                 </Link>
               )}
 
               {shouldShowNavigation && (
-                <div className="hidden md:flex items-center gap-3">
+                <div className="flex items-center gap-2 sm:gap-3">
                   <button
                     ref={prevButtonRef}
-                    className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-pharos-slate-200 bg-white text-pharos-navy-900 shadow-sm transition-all hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    className="group relative flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-pharos-slate-200 bg-white text-pharos-navy-900 shadow-sm transition-all hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary touch-manipulation active:scale-95"
                     aria-label="Ver imóveis anteriores"
                     aria-controls={swiperInstanceId}
                   >
-                    <svg className="h-5 w-5 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.2}>
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:-translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
                     </svg>
                   </button>
                   <button
                     ref={nextButtonRef}
-                    className="group relative flex h-12 w-12 items-center justify-center rounded-full border border-pharos-slate-200 bg-white text-pharos-navy-900 shadow-sm transition-all hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                    className="group relative flex h-10 w-10 sm:h-12 sm:w-12 items-center justify-center rounded-full border border-pharos-slate-200 bg-white text-pharos-navy-900 shadow-sm transition-all hover:border-primary/40 hover:text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary touch-manipulation active:scale-95"
                     aria-label="Ver próximos imóveis"
                     aria-controls={swiperInstanceId}
                   >
-                    <svg className="h-5 w-5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.2}>
+                    <svg className="h-4 w-4 sm:h-5 sm:w-5 transition-transform group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth={2.2}>
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
                     </svg>
                   </button>

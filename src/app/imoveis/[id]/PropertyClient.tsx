@@ -228,7 +228,7 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
         window.localStorage.setItem(RECENTLY_VIEWED_KEY, JSON.stringify(updated));
         setRecentViewed(updated.filter((item) => item.id !== property.id));
       } catch (storageError) {
-        console.warn('[PropertyPage] Falha ao registrar imóvel em vistos recentemente:', storageError);
+        // Silently fail - não é crítico
       }
     };
 
@@ -355,30 +355,12 @@ export default function PropertyClient({ propertyId, initialProperty }: Property
     // Suporta tanto videos (Property) quanto videosYoutube (Imovel)
     const videosList = (property as any).videos || (property as any).videosYoutube;
     
-    console.log('[PropertyClient] 🎥 Processando vídeos:', {
-      propertyId: property.id,
-      propertyCode: property.code,
-      videosRaw: videosList,
-      isArray: Array.isArray(videosList),
-      length: Array.isArray(videosList) ? videosList.length : 0,
-    });
-    
     if (!Array.isArray(videosList)) return [];
     
     // Remove duplicatas e URLs vazias
     const uniqueUrls = Array.from(new Set(
       videosList.filter((url): url is string => typeof url === 'string' && url.length > 0)
     ));
-    
-    if (videosList.length !== uniqueUrls.length) {
-      console.log('[PropertyClient] ⚠️ Removidas duplicatas de vídeos:', {
-        original: videosList.length,
-        unique: uniqueUrls.length,
-        removidas: videosList.length - uniqueUrls.length,
-        originalUrls: videosList,
-        uniqueUrls,
-      });
-    }
 
     return uniqueUrls.map((url, index) => ({
       url,

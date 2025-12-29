@@ -30,15 +30,17 @@ export const ContactQuickCards: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center gap-3 -mt-8 relative z-20">
+    <div className="flex flex-col sm:flex-row items-stretch sm:items-center justify-center gap-3 sm:gap-4 -mt-6 sm:-mt-8 relative z-20 px-4 sm:px-0">
       <Button
         variant="primary"
         size="lg"
         onClick={handleWhatsApp}
         icon={<PhoneIcon className="w-5 h-5" />}
         aria-label="Chamar no WhatsApp"
+        className="w-full sm:w-auto min-h-[48px] text-base font-semibold shadow-lg hover:shadow-xl transition-shadow"
       >
-        WhatsApp
+        <span className="hidden sm:inline">WhatsApp</span>
+        <span className="sm:hidden">Falar no WhatsApp</span>
       </Button>
       
       <Button
@@ -47,8 +49,10 @@ export const ContactQuickCards: React.FC = () => {
         onClick={handlePhone}
         icon={<PhoneIcon className="w-5 h-5" />}
         aria-label="Ligar para telefone"
+        className="w-full sm:w-auto min-h-[48px] text-base font-semibold shadow-md hover:shadow-lg transition-shadow"
       >
-        (47) 9 9187-8070
+        <span className="hidden sm:inline">(47) 9 9187-8070</span>
+        <span className="sm:hidden">Ligar: (47) 9 9187-8070</span>
       </Button>
     </div>
   );

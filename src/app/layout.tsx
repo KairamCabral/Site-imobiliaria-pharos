@@ -58,6 +58,18 @@ export default function RootLayout({
   return (
     <html lang="pt-BR" className={`${inter.variable} font-sans`}>
       <head>
+         {/* Inline Critical CSS para Above-the-Fold */}
+         <style dangerouslySetInnerHTML={{__html: `
+           body{margin:0;font-family:Inter,system-ui,sans-serif;background:#fff}
+           .bg-gray-900{background-color:#111827}
+           .relative{position:relative}
+           .h-\\[65vh\\]{height:65vh}
+           .min-h-\\[680px\\]{min-height:680px}
+           .flex{display:flex}
+           .items-center{align-items:center}
+           .justify-center{justify-content:center}
+         `}} />
+         
          {/* DNS Prefetch para domínios externos críticos */}
          <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
          <link rel="dns-prefetch" href="https://www.google-analytics.com" />

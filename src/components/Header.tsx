@@ -1028,31 +1028,19 @@ export default function Header() {
               </svg>
             </button>
 
-            <button
-              className="relative z-50 w-10 h-10 flex flex-col items-center justify-center gap-1.5 text-pharos-slate-700"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label={isMobileMenuOpen ? 'Fechar menu' : 'Abrir menu'}
-              aria-expanded={isMobileMenuOpen}
-            >
-              <span
-                className={twMerge(
-                  'block w-6 h-0.5 bg-current transition-all duration-300 ease-out',
-                  isMobileMenuOpen ? 'rotate-45 translate-y-2' : 'rotate-0'
-                )}
-              />
-              <span
-                className={twMerge(
-                  'block w-6 h-0.5 bg-current transition-all duration-300 ease-out',
-                  isMobileMenuOpen ? 'opacity-0 scale-0' : 'opacity-100 scale-100'
-                )}
-              />
-              <span
-                className={twMerge(
-                  'block w-6 h-0.5 bg-current transition-all duration-300 ease-out',
-                  isMobileMenuOpen ? '-rotate-45 -translate-y-2' : 'rotate-0'
-                )}
-              />
-            </button>
+            {/* Botão Hamburger - só aparece quando menu está fechado */}
+            {!isMobileMenuOpen && (
+              <button
+                className="relative w-10 h-10 flex flex-col items-center justify-center gap-1.5 text-pharos-slate-700"
+                onClick={() => setIsMobileMenuOpen(true)}
+                aria-label="Abrir menu"
+                aria-expanded={false}
+              >
+                <span className="block w-6 h-0.5 bg-current" />
+                <span className="block w-6 h-0.5 bg-current" />
+                <span className="block w-6 h-0.5 bg-current" />
+              </button>
+            )}
           </div>
         </div>
       </div>
@@ -1060,17 +1048,19 @@ export default function Header() {
       {/* Menu Mobile - Overlay */}
       {isMobileMenuOpen && (
         <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40 lg:hidden transition-opacity duration-300"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm lg:hidden transition-opacity duration-300"
           onClick={() => setIsMobileMenuOpen(false)}
+          style={{ zIndex: 99998 }}
         />
       )}
 
       {/* Menu Mobile - Drawer */}
       <div
         className={twMerge(
-          'fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-pharos-base-white z-50 flex flex-col transition-transform duration-300 ease-out lg:hidden shadow-2xl',
+          'fixed top-0 right-0 bottom-0 w-full sm:w-96 bg-pharos-base-white flex flex-col transition-transform duration-300 ease-out lg:hidden shadow-2xl',
           isMobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
         )}
+        style={{ zIndex: 99999 }}
       >
         {/* Header do Menu Mobile */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-pharos-slate-300">
