@@ -183,3 +183,4 @@ A galeria mobile mantém integração perfeita com o lightbox fullscreen:
 **Versão**: 2.0
 **Status**: ✅ Implementado e Testado
 
+

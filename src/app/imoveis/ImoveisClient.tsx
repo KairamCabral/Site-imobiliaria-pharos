@@ -113,6 +113,7 @@ export interface FiltrosState {
   vagas: string;
   codigoImovel: string;
   empreendimento: string;
+  buscaLivre: string; // Campo para busca livre (cidade, empreendimento, código)
   caracteristicasImovel: string[];
   caracteristicasLocalizacao: string[];
   caracteristicasEmpreendimento: string[];
@@ -163,6 +164,7 @@ function createFiltersState(overrides?: Partial<FiltrosState>): FiltrosState {
     vagas: overrides?.vagas ?? '',
     codigoImovel: overrides?.codigoImovel ?? '',
     empreendimento: overrides?.empreendimento ?? '',
+    buscaLivre: overrides?.buscaLivre ?? '', // Campo para busca livre
     caracteristicasImovel: [...(overrides?.caracteristicasImovel ?? [])],
     caracteristicasLocalizacao: [...(overrides?.caracteristicasLocalizacao ?? [])],
     caracteristicasEmpreendimento: [...(overrides?.caracteristicasEmpreendimento ?? [])],
@@ -214,7 +216,14 @@ export default function ImoveisClient({
   const [isMounted, setIsMounted] = useState(false);
   const [showMobileFilters, setShowMobileFilters] = useState(false);
 
-  const initialFiltersState = useMemo(() => createFiltersState(initialFilters), [initialFilters]);
+  // ✅ FIX: Ler parâmetro 'search' da URL na inicialização
+  const initialFiltersState = useMemo(() => {
+    const searchUrl = searchParams.get('search') || '';
+    return createFiltersState({
+      ...initialFilters,
+      buscaLivre: searchUrl || initialFilters?.buscaLivre || '',
+    });
+  }, [initialFilters, searchParams]);
 
   const [filtros, setFiltros] = useState<FiltrosState>(initialFiltersState);
   const [todosImoveis, setTodosImoveis] = useState<ImovelType[]>(initialData);
@@ -254,6 +263,7 @@ export default function ImoveisClient({
     if (filtros.vagas) count++;
     if (filtros.codigoImovel) count++;
     if (filtros.empreendimento) count++;
+    if (filtros.buscaLivre) count++; // ✅ FIX: Incluir busca livre
     count += filtros.caracteristicasImovel.length;
     count += filtros.caracteristicasLocalizacao.length;
     count += filtros.caracteristicasEmpreendimento.length;
@@ -344,13 +354,14 @@ export default function ImoveisClient({
   const debouncedAreaMin = useDebounce(filtros.areaMin, 300);
   const debouncedAreaMax = useDebounce(filtros.areaMax, 300);
 
-  // Inicializar filtros a partir da URL (tipo/tipoImovel/status)
+  // Inicializar filtros a partir da URL (tipo/tipoImovel/status/search)
   useEffect(() => {
     const tipoImovel = searchParams.get('tipoImovel') || searchParams.get('type') || '';
     const statusUrl = searchParams.get('status') || '';
     const minPriceUrl = searchParams.get('minPrice') || '';
     const maxPriceUrl = searchParams.get('maxPrice') || '';
     const isExclusiveUrl = searchParams.get('isExclusive') || '';
+    const searchUrl = searchParams.get('search') || ''; // ✅ FIX: Ler parâmetro de busca livre
     const sanitizeNumber = (value: string) => value.replace(/\D/g, '');
 
     const novos: Partial<FiltrosState> = {};
@@ -374,11 +385,13 @@ export default function ImoveisClient({
       const sanitized = sanitizeNumber(maxPriceUrl);
       if (sanitized) novos.precoMax = sanitized;
     }
+    if (searchUrl) {
+      novos.buscaLivre = searchUrl;
+    }
     if (Object.keys(novos).length > 0) {
       setFiltros(prev => ({ ...prev, ...novos } as FiltrosState));
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [searchParams]);
 
   // Carregar imóveis da API (append para infinite scroll)
   useEffect(() => {
@@ -429,6 +442,7 @@ export default function ImoveisClient({
           parkingFourPlus: (filtros as any).vagas4Plus,
           propertyCode: filtros.codigoImovel,
           buildingName: filtros.empreendimento,
+          searchTerm: filtros.buscaLivre, // ✅ FIX: Passar busca livre para API
           propertyFeatures: filtros.caracteristicasImovel,
           locationFeatures: filtros.caracteristicasLocalizacao,
           buildingFeatures: filtros.caracteristicasEmpreendimento,

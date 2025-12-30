@@ -31,7 +31,7 @@ export default function Sobre() {
 
       {/* Hero Minimalista Premium - Mobile-First */}
       <section 
-        className="relative h-[420px] sm:h-[480px] md:h-[520px] lg:h-[560px] xl:h-[600px] overflow-hidden bg-pharos-navy-900"
+        className="relative h-[340px] sm:h-[380px] md:h-[420px] lg:h-[460px] xl:h-[500px] overflow-hidden bg-pharos-navy-900"
         role="banner"
         aria-label="Seção sobre a Pharos"
       >
@@ -47,10 +47,11 @@ export default function Sobre() {
             alt="Pharos Negócios Imobiliários"
             fill
             priority
-            quality={95}
+            quality={80}
             sizes="100vw"
             className="!object-cover !object-center"
             style={{ 
+              aspectRatio: '16/9',
               filter: "saturate(0.9) brightness(0.78)",
               width: '100%',
               height: '100%',

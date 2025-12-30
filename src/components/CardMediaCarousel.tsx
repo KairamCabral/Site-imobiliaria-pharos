@@ -153,12 +153,12 @@ export default function CardMediaCarousel({
           src={currentImage.src}
           alt={currentImage.alt || titulo || `${tipoImovel} ${propertyId}`}
           fill
-          sizes="(max-width: 640px) 95vw, (max-width: 768px) 90vw, (max-width: 1024px) 48vw, (max-width: 1280px) 32vw, 28vw"
+          sizes="(max-width: 640px) 100vw, (max-width: 768px) 50vw, (max-width: 1280px) 33vw, 28vw"
           className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-300 ease-out"
           priority={priority && currentIndex === 0}
           loading={priority && currentIndex === 0 ? "eager" : "lazy"}
           draggable={false}
-          quality={currentIndex === 0 ? 85 : 75}
+          variant="card"
           placeholder="blur"
           blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YzZjRmNiIvPjwvc3ZnPg=="
         />

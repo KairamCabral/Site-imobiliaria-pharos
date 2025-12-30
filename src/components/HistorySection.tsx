@@ -18,20 +18,23 @@ export const HistorySection: React.FC = () => {
             className="relative order-2 lg:order-1"
           >
             <div className="relative h-[300px] sm:h-[400px] md:h-[450px] lg:h-[500px] rounded-xl sm:rounded-2xl overflow-hidden shadow-xl sm:shadow-2xl">
-              <Image 
-                src="/images/banners/balneario-camboriu.webp" 
-                alt="Balneário Camboriú - Vista aérea da cidade" 
-                fill
-                className="object-cover w-full h-full"
-                sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 45vw"
-                quality={85}
-                style={{
-                  objectFit: 'cover',
-                  width: '100%',
-                  height: '100%'
-                }}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-pharos-navy-900/40 to-transparent" />
+              <div className="absolute inset-0 w-full h-full">
+                <Image 
+                  src="/images/banners/balneario-camboriu.webp" 
+                  alt="Balneário Camboriú - Vista aérea da cidade" 
+                  fill
+                  className="!object-cover !w-full !h-full"
+                  sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 45vw"
+                  quality={85}
+                  style={{
+                    objectFit: 'cover',
+                    objectPosition: 'center',
+                    width: '100%',
+                    height: '100%'
+                  }}
+                />
+              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-pharos-navy-900/40 to-transparent z-10" />
             </div>
             
             {/* Elemento decorativo - Oculto em mobile para performance */}

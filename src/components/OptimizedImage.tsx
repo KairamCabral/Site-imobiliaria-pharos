@@ -2,16 +2,37 @@
 
 import Image, { ImageProps } from 'next/image';
 import { getGenericBlurDataURL, getSmartBlurDataURL } from '@/utils/imageBlurUtils';
+import { 
+  optimizeExternalImage, 
+  QUALITY_PRESETS, 
+  DEFAULT_PLACEHOLDER,
+  type ImageQualityPreset 
+} from '@/utils/imageOptimizer';
 
-interface OptimizedImageProps extends ImageProps {
+interface OptimizedImageProps extends Omit<ImageProps, 'quality'> {
   propertyType?: string; // Tipo de imóvel para blur placeholder colorido
+  variant?: ImageQualityPreset; // Preset de qualidade: 'hero' | 'card' | 'gallery' | 'thumbnail'
 }
 
 /**
- * Componente de imagem otimizado que:
- * - Usa <img> nativo para hosts DWV (evita problemas de otimização)
- * - Usa Next/Image para outros hosts
- * - Adiciona blur placeholders automaticamente
+ * 🚀 Componente de Imagem Super Otimizado
+ * 
+ * Otimizações aplicadas:
+ * ✅ Quality adaptativo por variante (hero: 80, card: 75, gallery: 70, thumbnail: 65)
+ * ✅ Cloudinary como proxy opcional (25GB grátis/mês)
+ * ✅ Deixa Next.js/Vercel otimizar via /_next/image quando Cloudinary não configurado
+ * ✅ Blur placeholder automático para evitar CLS
+ * ✅ Lazy loading inteligente
+ * 
+ * Uso:
+ * <OptimizedImage 
+ *   src={imageUrl} 
+ *   alt="..."
+ *   width={800}
+ *   height={600}
+ *   variant="card" // hero | card | gallery | thumbnail
+ *   sizes="(max-width: 768px) 100vw, 50vw"
+ * />
  */
 export function OptimizedImage(props: OptimizedImageProps) {
   const { 
@@ -20,7 +41,7 @@ export function OptimizedImage(props: OptimizedImageProps) {
     fill, 
     className, 
     sizes, 
-    quality, 
+    variant = 'card',
     placeholder: providedPlaceholder, 
     blurDataURL: providedBlurDataURL, 
     loading, 
@@ -28,88 +49,48 @@ export function OptimizedImage(props: OptimizedImageProps) {
     style, 
     priority,
     propertyType,
+    width,
+    height,
     ...restProps 
   } = props;
+  
+  // Resolver quality do preset
+  const quality = QUALITY_PRESETS[variant];
+  
+  // ✅ Otimizar URL via Cloudinary (se configurado) ou deixar Next.js otimizar
+  const optimizedSrc = typeof src === 'string' 
+    ? optimizeExternalImage(src, {
+        width: width as number,
+        quality: variant,
+      })
+    : src;
   
   // ✅ OTIMIZAÇÃO: Gerar blur placeholder automaticamente se não fornecido
   const shouldUseBlur = !providedPlaceholder && !providedBlurDataURL && !priority;
   const blurDataURL = shouldUseBlur 
-    ? (typeof src === 'string' ? getSmartBlurDataURL(src) : getGenericBlurDataURL())
+    ? (typeof src === 'string' ? getSmartBlurDataURL(src) : DEFAULT_PLACEHOLDER)
     : providedBlurDataURL;
   
   const placeholder = shouldUseBlur ? 'blur' as const : providedPlaceholder;
   
-  // Se src é string e contém hosts DWV/Vista, otimiza e usa img nativo
-  if (typeof src === 'string' && (
-    src.includes('dwvimagesv1.b-cdn.net') ||
-    src.includes('b-cdn.net') ||
-    src.includes('cdn.vistahost.com.br') ||
-    src.includes('vistahost.com.br')
-  )) {
-    // ✅ OTIMIZAÇÃO AGRESSIVA: Reduzir tamanhos e qualidade
-    let optimizedSrc = src;
-    const targetWidth = fill ? 800 : 600; // Reduzido de 1200/800
-    const targetQuality = 60; // Reduzido de 75
-    
-    // Para B-CDN (DWV), adiciona parâmetros de resize e qualidade
-    if (src.includes('b-cdn.net')) {
-      const separator = src.includes('?') ? '&' : '?';
-      optimizedSrc = `${src}${separator}width=${targetWidth}&quality=${targetQuality}&format=webp`;
-    }
-    
-    // Para Vista CDN, adiciona parâmetros se disponível
-    if (src.includes('vistahost.com.br')) {
-      const separator = src.includes('?') ? '&' : '?';
-      optimizedSrc = `${src}${separator}w=${targetWidth}&q=${targetQuality}&fm=webp`;
-    }
-    
-    const imgStyle: React.CSSProperties = {
-      ...style,
-      objectFit: 'cover',
-      width: fill ? '100%' : style?.width,
-      height: fill ? '100%' : style?.height,
-      position: fill ? 'absolute' : (style?.position || 'relative'),
-      inset: fill ? 0 : undefined,
-      // ✅ Fade-in suave para imagens carregadas
-      transition: 'opacity 0.3s ease-in-out',
-    };
-
-    return (
-      <img
-        src={optimizedSrc}
-        alt={alt}
-        className={className}
-        style={imgStyle}
-        loading={loading || (priority ? 'eager' : 'lazy')}
-        draggable={draggable}
-        // ✅ Adicionar width/height para evitar CLS
-        width={fill ? undefined : 400}
-        height={fill ? undefined : 300}
-        {...(restProps as any)}
-      />
-    );
-  }
-  
-  // Para outros hosts, usa Next/Image com blur placeholder
+  // Montar props do Next/Image
   const imageProps: ImageProps = {
     ...restProps,
-    src,
-    alt,
+    src: optimizedSrc,
+    alt: alt || '',
     fill,
+    width: !fill ? width : undefined,
+    height: !fill ? height : undefined,
     className,
     sizes,
     quality,
-    loading,
-    draggable,
+    loading: priority ? 'eager' : (loading || 'lazy'),
+    draggable: draggable ?? false,
     style,
     placeholder,
     blurDataURL,
+    priority,
   };
-  
-  // Só passa priority se for true
-  if (priority) {
-    imageProps.priority = true;
-  }
   
   return <Image {...imageProps} />;
 }

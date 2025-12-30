@@ -382,7 +382,7 @@ export default function PropertyCardHorizontal({
               sizes="(max-width: 768px) 100vw, 42vw"
               draggable={false}
               loading="lazy"
-              quality={currentIndex === 0 ? 80 : 70}
+              variant="card"
               placeholder="blur"
               blurDataURL="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cmVjdCB3aWR0aD0iNDAwIiBoZWlnaHQ9IjMwMCIgZmlsbD0iI2YzZjRmNiIvPjwvc3ZnPg=="
               key={currentImage.src}

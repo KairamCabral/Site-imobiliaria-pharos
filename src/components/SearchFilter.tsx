@@ -8,7 +8,10 @@ import {
   MagnifyingGlassIcon, 
   XMarkIcon,
   FunnelIcon,
-  AdjustmentsHorizontalIcon
+  AdjustmentsHorizontalIcon,
+  HomeIcon,
+  SparklesIcon,
+  BanknotesIcon
 } from '@heroicons/react/24/outline';
 import { useRouter } from 'next/navigation';
 import { createPortal } from 'react-dom';
@@ -51,9 +54,10 @@ interface DropdownProps {
   value: string[];
   onChange: (value: string[]) => void;
   className?: string;
+  icon?: React.ComponentType<{ className?: string }>;
 }
 
-const Dropdown = ({ label, options, value, onChange, className }: DropdownProps) => {
+const Dropdown = ({ label, options, value, onChange, className, icon: Icon }: DropdownProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [menuPosition, setMenuPosition] = useState({ top: 0, left: 0, width: 0 });
   const containerRef = useRef<HTMLDivElement>(null);
@@ -163,9 +167,12 @@ const Dropdown = ({ label, options, value, onChange, className }: DropdownProps)
         aria-haspopup="listbox"
         aria-expanded={isOpen}
       >
-        <div className="flex flex-col">
-          <span className="text-xs text-gray-500 font-medium mb-0.5">{label}</span>
-          <span className="text-sm font-medium truncate">{displayText()}</span>
+        <div className="flex items-center gap-2">
+          {Icon && <Icon className="w-4 h-4 text-gray-400 flex-shrink-0" />}
+          <div className="flex flex-col flex-1 min-w-0">
+            <span className="text-xs text-gray-500 font-medium mb-0.5">{label}</span>
+            <span className="text-sm font-medium truncate">{displayText()}</span>
+          </div>
         </div>
         <span className="absolute inset-y-0 right-0 flex items-center pr-2.5 pointer-events-none">
           {isOpen ? (
@@ -735,10 +742,10 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
     >
       <div className="w-full">
         <div className={`text-left ${isHero ? 'mb-4 md:mb-6' : 'mb-6 md:mb-8 lg:mb-10'} md:max-w-2xl lg:mx-0 mx-auto`}>
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-serif font-bold text-white mb-2 md:mb-3 leading-tight tracking-tight">
+          <h1 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-serif font-bold text-white mb-2 md:mb-3 leading-tight tracking-tight">
             Seu próximo endereço de alto padrão começa aqui
           </h1>
-          <p className="text-lg md:text-xl lg:text-2xl text-gray-200 font-light">
+          <p className="text-base sm:text-lg md:text-xl lg:text-2xl text-white/90 font-light leading-relaxed">
             Imóveis em Balneário Camboriú, Praia Brava e região
           </p>
         </div>
@@ -790,10 +797,18 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
                   type="text" 
                   name="termo"
                   value={filtros.termo}
-                  onChange={(e) => setFiltros(prev => ({ ...prev, termo: e.target.value }))}
-                  placeholder="Cidade, Bairro ou Empreendimento"
+                  onChange={(e) => {
+                    setFiltros(prev => ({ ...prev, termo: e.target.value }));
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      buscarImoveis();
+                    }
+                  }}
+                  placeholder="Cidade, empreendimento ou cód. Imóvel"
                   className="w-full h-12 md:h-auto pl-12 pr-4 py-3 md:py-4 rounded-xl border border-gray-200 placeholder-gray-400 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary transition-all text-base"
-                  aria-label="Pesquise por cidade, bairro ou empreendimento"
+                  aria-label="Pesquise por cidade, empreendimento ou código do imóvel"
                 />
               </div>
               
@@ -802,6 +817,7 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 flex-grow">
                   <Dropdown 
                     label="Tipo do imóvel"
+                    icon={HomeIcon}
                     options={tipoImovelOptions}
                     value={filtros.tiposImovel}
                     onChange={handleDropdownChange('tiposImovel')}
@@ -809,6 +825,7 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
                   
                   <Dropdown 
                     label="Status"
+                    icon={SparklesIcon}
                     options={statusOptions}
                     value={filtros.status}
                     onChange={handleDropdownChange('status')}
@@ -816,6 +833,7 @@ export default function SearchFilter({ defaultTab = 'comprar', hideTabSwitch = f
                   
                   <Dropdown 
                     label="Valor"
+                    icon={BanknotesIcon}
                     options={valorOptions}
                     value={filtros.valoresAproximados}
                     onChange={handleDropdownChange('valoresAproximados')}

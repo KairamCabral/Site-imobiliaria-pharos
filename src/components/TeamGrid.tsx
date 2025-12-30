@@ -82,12 +82,17 @@ export const TeamGrid: React.FC = () => {
                     alt={member.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 66vw, 50vw"
-                    className="object-cover object-center w-full h-full group-hover:scale-110 transition-transform duration-700"
-                    style={{ objectFit: 'cover' }}
+                    className="!object-cover !object-center !w-full !h-full group-hover:scale-110 transition-transform duration-700"
+                    style={{ 
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      width: '100%',
+                      height: '100%'
+                    }}
                   />
                   
                   {/* Overlay escuro apenas embaixo para destacar texto */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent z-10" />
                 </div>
                 
                 {/* Content Premium */}
@@ -164,12 +169,17 @@ export const TeamGrid: React.FC = () => {
                     alt={member.name}
                     fill
                     sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                    className="object-cover object-center w-full h-full group-hover:scale-110 transition-transform duration-700"
-                    style={{ objectFit: 'cover' }}
+                    className="!object-cover !object-center !w-full !h-full group-hover:scale-110 transition-transform duration-700"
+                    style={{ 
+                      objectFit: 'cover',
+                      objectPosition: 'center',
+                      width: '100%',
+                      height: '100%'
+                    }}
                   />
                   
                   {/* Overlay escuro apenas embaixo para destacar texto */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-slate-950/95 via-slate-950/50 to-transparent z-10" />
                 </div>
                 
                 {/* Content Premium */}

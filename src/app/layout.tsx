@@ -10,6 +10,7 @@ import WebVitalsReporter from "@/components/WebVitalsReporter";
 import { PWAProvider } from "@/components/PWAInstallPrompt";
 import { ServiceWorkerRegistration } from "@/components/ServiceWorkerRegistration";
 import { PerformanceMonitor } from "@/components/PerformanceMonitor";
+import { ImagePerformanceMonitor } from "@/components/ImagePerformanceMonitor";
 
 // Configuração da fonte Inter como padrão para todo o projeto
 // display: swap evita FOIT (Flash of Invisible Text)
@@ -61,28 +62,104 @@ export default function RootLayout({
          {/* Inline Critical CSS EXPANDIDO para Above-the-Fold */}
          <style dangerouslySetInnerHTML={{__html: `
            *{box-sizing:border-box;margin:0;padding:0}
-           body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:#fff;color:#1f2937;line-height:1.5}
+           body{margin:0;font-family:Inter,system-ui,-apple-system,sans-serif;background:#fff;color:#1f2937;line-height:1.5;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+           
+           /* Cores base */
+           .bg-gray-50{background-color:#f9fafb}
+           .bg-gray-100{background-color:#f3f4f6}
            .bg-gray-900{background-color:#111827}
            .bg-white{background-color:#fff}
+           .bg-pharos-navy-900{background-color:#0B1E47}
+           .text-pharos-gold{color:#D4AF37}
+           .text-gray-600{color:#4b5563}
+           
+           /* Layout */
            .relative{position:relative}
            .absolute{position:absolute}
+           .fixed{position:fixed}
            .inset-0{top:0;right:0;bottom:0;left:0}
+           .overflow-hidden{overflow:hidden}
+           
+           /* Dimensões */
            .h-\\[65vh\\]{height:65vh}
            .min-h-\\[680px\\]{min-height:680px}
+           .min-h-screen{min-height:100vh}
+           .w-full{width:100%}
+           .h-full{height:100%}
+           
+           /* Flexbox */
            .flex{display:flex}
+           .flex-col{flex-direction:column}
            .items-center{align-items:center}
            .items-start{align-items:flex-start}
            .justify-center{justify-content:center}
+           .justify-between{justify-content:space-between}
+           .gap-4{gap:1rem}
+           .gap-6{gap:1.5rem}
+           
+           /* Grid */
+           .grid{display:grid}
+           .grid-cols-1{grid-template-columns:repeat(1,minmax(0,1fr))}
+           @media(min-width:768px){.md\\:grid-cols-2{grid-template-columns:repeat(2,minmax(0,1fr))}}
+           @media(min-width:1024px){.lg\\:grid-cols-3{grid-template-columns:repeat(3,minmax(0,1fr))}}
+           
+           /* Imagens */
            .object-cover{object-fit:cover}
+           .object-center{object-position:center}
+           img,picture{max-width:100%;height:auto;display:block}
+           
+           /* Z-index */
            .z-10{z-index:10}
            .z-20{z-index:20}
+           .z-50{z-index:50}
+           
+           /* Espaçamento */
+           .p-4{padding:1rem}
+           .px-4{padding-left:1rem;padding-right:1rem}
+           .py-6{padding-top:1.5rem;padding-bottom:1.5rem}
            .pt-20{padding-top:5rem}
-           img,picture{max-width:100%;height:auto;display:block}
-           .container{width:100%;margin-left:auto;margin-right:auto;padding-left:1.5rem;padding-right:1.5rem}
-           @media(min-width:640px){.container{max-width:640px}}
+           .mb-4{margin-bottom:1rem}
+           .mb-6{margin-bottom:1.5rem}
+           
+           /* Tipografia */
+           .text-sm{font-size:0.875rem;line-height:1.25rem}
+           .text-base{font-size:1rem;line-height:1.5rem}
+           .text-lg{font-size:1.125rem;line-height:1.75rem}
+           .text-xl{font-size:1.25rem;line-height:1.75rem}
+           .text-2xl{font-size:1.5rem;line-height:2rem}
+           .text-3xl{font-size:1.875rem;line-height:2.25rem}
+           .font-medium{font-weight:500}
+           .font-semibold{font-weight:600}
+           .font-bold{font-weight:700}
+           .text-center{text-align:center}
+           
+           /* Bordas e sombras */
+           .rounded-lg{border-radius:0.5rem}
+           .rounded-xl{border-radius:0.75rem}
+           .rounded-2xl{border-radius:1rem}
+           .shadow-sm{box-shadow:0 1px 2px 0 rgba(0,0,0,.05)}
+           .shadow-md{box-shadow:0 4px 6px -1px rgba(0,0,0,.1),0 2px 4px -1px rgba(0,0,0,.06)}
+           .shadow-lg{box-shadow:0 10px 15px -3px rgba(0,0,0,.1),0 4px 6px -2px rgba(0,0,0,.05)}
+           
+           /* Animações de loading */
+           .animate-pulse{animation:pulse 2s cubic-bezier(.4,0,.6,1) infinite}
+           @keyframes pulse{0%,100%{opacity:1}50%{opacity:.5}}
+           
+           /* Transições */
+           .transition-all{transition-property:all;transition-timing-function:cubic-bezier(.4,0,.2,1);transition-duration:150ms}
+           .duration-300{transition-duration:300ms}
+           
+           /* Container responsivo */
+           .container{width:100%;margin-left:auto;margin-right:auto;padding-left:1rem;padding-right:1rem}
+           @media(min-width:640px){.container{max-width:640px;padding-left:1.5rem;padding-right:1.5rem}}
            @media(min-width:768px){.container{max-width:768px}}
            @media(min-width:1024px){.container{max-width:1024px}}
            @media(min-width:1280px){.container{max-width:1280px}}
+           @media(min-width:1536px){.container{max-width:1536px}}
+           
+           /* Skeleton placeholder */
+           .skeleton{background:linear-gradient(90deg,#f3f4f6 25%,#e5e7eb 50%,#f3f4f6 75%);background-size:200% 100%;animation:skeleton 1.5s ease-in-out infinite}
+           @keyframes skeleton{0%{background-position:200% 0}100%{background-position:-200% 0}}
          `}} />
          
          {/* DNS Prefetch para domínios externos críticos */}
@@ -136,6 +213,7 @@ export default function RootLayout({
           <WebVitalsReporter />
           <ServiceWorkerRegistration />
           <PerformanceMonitor />
+          <ImagePerformanceMonitor />
           
           {/* Providers e layout */}
           <FavoritosProvider>

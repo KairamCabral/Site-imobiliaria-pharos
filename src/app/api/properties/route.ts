@@ -204,7 +204,26 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    // Código do imóvel (busca exata)
+    // Busca livre (search) - detecta se é código, empreendimento ou busca genérica
+    if (searchParams.has('search')) {
+      const searchValue = (searchParams.get('search') || '').trim();
+      
+      if (searchValue) {
+        // Heurística: Se parece código (ex: PH742, PH1045), usar como propertyCode
+        // Padrão: letras seguidas de números, sem espaços ou com poucos caracteres
+        const looksLikeCode = /^[A-Za-z]{1,4}\d{2,6}$/i.test(searchValue.replace(/\s+/g, ''));
+        
+        if (looksLikeCode) {
+          // É um código de imóvel
+          filters.propertyCode = searchValue.toUpperCase().replace(/\s+/g, '');
+        } else {
+          // Provavelmente um nome de empreendimento ou busca genérica
+          filters.buildingName = searchValue;
+        }
+      }
+    }
+    
+    // Código do imóvel (busca exata) - prioridade se vier explicitamente
     if (searchParams.has('codigo')) {
       const rawCodigo = searchParams.get('codigo') || '';
       const normalizedCodigo = rawCodigo.trim().toUpperCase();
@@ -213,7 +232,7 @@ export async function GET(request: NextRequest) {
       }
     }
     
-    // Empreendimento (busca parcial)
+    // Empreendimento (busca parcial) - prioridade se vier explicitamente
     if (searchParams.has('empreendimento')) {
       filters.buildingName = searchParams.get('empreendimento')!;
     }

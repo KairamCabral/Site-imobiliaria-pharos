@@ -121,7 +121,27 @@ export const buildPropertySearchParams = (
     inferCitiesFromLocationFeatures(filters.locationFeatures).forEach((city) => citySet.add(city));
   }
 
-  if (citySet.size === 0 && (options.includeDefaultCity ?? true)) {
+  // FIX: Não adicionar cidade padrão se houver qualquer filtro ativo
+  // Usuário deve escolher explicitamente a cidade quando usar filtros
+  const hasAnyFilter = 
+    filters.searchTerm || 
+    filters.propertyCode || 
+    filters.buildingName ||
+    (filters.status && filters.status.length > 0) ||
+    (filters.types && filters.types.length > 0) ||
+    filters.priceMin || 
+    filters.priceMax || 
+    (filters.priceRanges && filters.priceRanges.length > 0) ||
+    filters.areaMin || 
+    filters.areaMax ||
+    filters.bedroomsMin ||
+    filters.suitesMin ||
+    filters.parkingMin ||
+    (filters.propertyFeatures && filters.propertyFeatures.length > 0) ||
+    (filters.buildingFeatures && filters.buildingFeatures.length > 0);
+  
+  // Só adiciona BC como padrão se não houver NENHUM filtro ativo
+  if (citySet.size === 0 && (options.includeDefaultCity ?? true) && !hasAnyFilter) {
     citySet.add('Balneário Camboriú');
   }
 

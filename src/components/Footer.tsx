@@ -12,7 +12,10 @@ export default function Footer() {
   const localBusinessSchema = generateLocalBusinessSchema();
   
   return (
-    <footer className="relative bg-pharos-navy-900 text-white overflow-hidden">
+    <footer 
+      className="relative bg-pharos-navy-900 text-white overflow-hidden" 
+      style={{ minHeight: '500px', contentVisibility: 'auto' }}
+    >
       {/* LocalBusiness Schema para SEO Local */}
       <StructuredData data={localBusinessSchema} />
       {/* Background sutil */}
