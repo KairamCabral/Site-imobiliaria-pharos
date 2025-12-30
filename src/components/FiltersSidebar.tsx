@@ -43,6 +43,7 @@ interface FiltrosState {
   vagas4Plus?: boolean;
   codigoImovel: string;
   empreendimento: string;
+  buscaLivre: string; // Campo para busca livre (cidade, empreendimento, código)
   caracteristicasImovel: string[];
   caracteristicasLocalizacao: string[];
   caracteristicasEmpreendimento: string[];
