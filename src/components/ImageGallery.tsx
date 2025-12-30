@@ -332,7 +332,7 @@ export default function ImageGallery({
               className="object-cover transition-transform duration-700 group-hover:scale-105"
               sizes="(max-width: 1024px) 100vw, 70vw"
               priority
-              quality={75}
+              variant="card"
               onError={(e) => {
                 const target = e.target as HTMLImageElement;
                 target.style.display = 'none';
@@ -517,7 +517,7 @@ export default function ImageGallery({
                     fill
                     className="object-cover transition-transform duration-500 group-hover:scale-110"
                     sizes="(max-width: 1024px) 50vw, 20vw"
-                    quality={70}
+                    variant="gallery"
                     loading="lazy"
                     onError={(e) => {
                       const target = e.target as HTMLImageElement;
@@ -600,7 +600,7 @@ export default function ImageGallery({
                 fill
                 className="object-contain"
                 sizes="100vw"
-                quality={80}
+                variant="hero"
                 priority
                 onError={(e) => {
                   const target = e.target as HTMLImageElement;
@@ -652,7 +652,7 @@ export default function ImageGallery({
                       fill
                       className="object-cover"
                       sizes="100px"
-                      quality={65}
+                      variant="thumbnail"
                       onError={(e) => {
                         const target = e.target as HTMLImageElement;
                         target.style.display = 'none';
